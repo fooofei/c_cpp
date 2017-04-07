@@ -29,7 +29,7 @@ void print_array(int * begin, int * end)
 }
 
 
-void bubble_sort(int * begin, int * end)
+void insert_sort(int * begin, int * end)
 {
     for (;begin<end; ++begin)
     {
