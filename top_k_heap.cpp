@@ -66,7 +66,7 @@ int main()
         // 这里需要考虑是大于还是小于
         if (ar[j] > ar_top[1] )
         {
-            // 更换堆中的极值后
+            // 更换堆中的极值后 需要重新找到堆中的极值
             ar_top[1] = ar[j];
             heapify(ar_top,ar_top+_countof(ar_top));
         }
