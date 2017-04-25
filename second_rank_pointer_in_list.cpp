@@ -98,7 +98,12 @@ void release_second_rank_pointer(node_t ** head)
     {
         node_t * next = (*head)->next;
         node_free(head);
-        *head = next;
+        *head = next; 
+
+        // ´íÎóÓÃ·¨
+        //node_t ** next = &((*head)->next);
+        //node_free(head);
+        //head = next;
     }
 }
 
