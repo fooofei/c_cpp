@@ -13,6 +13,17 @@ struct node_t
     {
         printf("node dtor\n");
     }
+
+    static void * operator new (size_t size)
+    {
+        printf("call operator new\n");
+        return malloc(size);
+    }
+    static void operator delete (void * p)
+    {
+        printf("call operator delete\n");
+        free(p);
+    }
 };
 
 struct function_identifier_t
@@ -28,32 +39,6 @@ struct function_identifier_t
     }
 };
 
-void * operator new (size_t size, const char * , long )
-{
-    printf("call operator new\n");
-
-    //void * p = operator new (size);
-    void * p = malloc(size);
-
-    return p;
-}
-
-
-#define new new(__FILE__,__LINE__)
-
-void operator delete (void *p, const char *, long)
-{
-    printf("call operator delete(void *, const char *, long)\n");
-    free(p);
-}
-
-void operator delete (void * p)
-{
-    printf("call operator delete(void *)\n");
-    free(p);
-}
-
-
 void normal_new()
 {
     function_identifier_t f("normal_new");
@@ -66,9 +51,9 @@ void normal_new()
 void operator_new()
 {
     function_identifier_t f("operator_new");
-    //node_t * p = (node_t *)operator new(sizeof(node_t)); // error // cannot use
+    node_t * p = (node_t *)operator new(sizeof(node_t)); // error // cannot use
     // node_t * p = (node_t*)operator new(node_t); // error
-    //free(p);
+    free(p);
     // no construct node
 }
 
@@ -82,11 +67,12 @@ int main()
 
 
 /*
+
 in normal_new
 call operator new
 node ctor
 node dtor
-call operator delete(void *)
+call operator delete
 out normal_new
 
 in operator_new

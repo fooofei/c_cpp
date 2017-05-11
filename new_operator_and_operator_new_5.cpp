@@ -38,11 +38,17 @@ void * operator new (size_t size, const char * , long )
     return p;
 }
 
+void  operator delete (void * p, const char * , long )
+{
+    printf("call operator delete(void *, const char *, long)\n");
+    free(p);
+}
+
 #define new1 new(__FILE__,__LINE__)
 
 void operator delete (void * p)
 {
-    printf("call operator delete\n");
+    printf("call operator delete(void * )\n");
     free(p);
 }
 
@@ -80,11 +86,13 @@ in normal_new
 call operator new
 node ctor
 node dtor
-call operator delete
+call operator delete(void * )
 out normal_new
 
 in operator_new
 call operator new
 out operator_new
+
+
 
 */
