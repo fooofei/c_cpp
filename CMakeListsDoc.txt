@@ -22,13 +22,15 @@ set(CMAKE_CXX_STANDARD 11)
 
 
 ## add .h headers located directorys
-# not include_directories(${CMAKE_HOME_DIRECTORY})
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_HOME_DIRECTORY}/inlcude)
+# not include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/inlcude)
 
+## add .cpp src files
+target_sources(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/u16string_bytes.cpp)
 
 ## add libs located directorys,
 # besides you must use target_link_libraries() to specific lib
-link_directories(${CMAKE_HOME_DIRECTORY})
+link_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 
 ## add source code compile options, same with -fPIC
@@ -74,3 +76,8 @@ set(CMAKE_SHARED_LIBRARY_SUFFIX ".pyd")
 # mkdir build
 # cd build
 # cmake -DCMAKE_BUILD_TYPE=Debug ..
+
+
+## current CMakeLists.txt directory
+# CMAKE_HOME_DIRECTORY not reliable, it can be other CMakeLists.txt directory
+add_library(${PROJECT_NAME} STATIC ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
