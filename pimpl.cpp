@@ -8,14 +8,15 @@
 // I change some.
 
 
-#include <iostream>
+
 
 // interface (widget.h)
 class widget {
-    class impl;
+    struct impl; // please use struct not use class
 public:
-    static widget* create(int);  // replacement of new
-    void release() const;  // replacement of delete
+    static widget* create(int);  // replacement of new, MUST, cannot use ctor, will stackoverflow
+    void release() const;  // replacement of delete, MUST, cannot use dtor, will stackoverflow
+
 
     void draw() const; // public API that will be forwarded to the implementation
     void draw();
@@ -24,10 +25,13 @@ public:
 
 // implementation (widget.cpp)
 
+
+#include "widget.h"
+#include <iostream>
 #define DESC_SELF impl * self = static_cast<impl *>(this);
 #define CONST_SELF const impl * self = static_cast<const impl *>(this);
 
-class widget::impl : public widget {
+struct widget::impl : public widget {
     int n; // private data
     impl(int n) : n(n) {}
 };
@@ -55,6 +59,7 @@ void widget::draw() {
     }
 }
 
+
 // user (main.cpp)
 int main()
 {
@@ -65,3 +70,8 @@ int main()
     w->release();
 
 }
+
+/*
+drawing a non-const widget 7
+drawing a const widget 7
+*/
