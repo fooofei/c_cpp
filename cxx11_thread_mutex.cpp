@@ -5,7 +5,7 @@
 #ifdef WIN32
 
 
-#include "../utilshjf/detectmemleak.h"
+#include "/detectmemleak.h"
 
 #ifdef _DEBUG
 struct _crt_dbg_leak_t g_mem(0);

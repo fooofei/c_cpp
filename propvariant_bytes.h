@@ -1,6 +1,9 @@
 
 
-HRESULT propvariant_from_bytes(void * addr, unsigned size, PROPVARIANT * prop)
+/* This file shows how to use PROPVARIANT type VT_VECTOR to pass addr and size */
+
+HRESULT 
+propvariant_from_bytes(void * addr, unsigned size, PROPVARIANT * prop)
 {
     if (!(addr && size && prop)) return E_INVALIDARG;
 
@@ -13,7 +16,8 @@ HRESULT propvariant_from_bytes(void * addr, unsigned size, PROPVARIANT * prop)
     return S_OK;
 }
 
-HRESULT propvariant_as_bytes(PROPVARIANT * prop, void ** addr, unsigned * size)
+HRESULT 
+propvariant_as_bytes(PROPVARIANT * prop, void ** addr, unsigned * size)
 {
     if (!(prop && addr && size)) return E_INVALIDARG;
     unsigned short tp = VT_VECTOR | VT_UI1;
@@ -22,3 +26,4 @@ HRESULT propvariant_as_bytes(PROPVARIANT * prop, void ** addr, unsigned * size)
     *size = (unsigned)prop->caub.cElems;
     return S_OK;
 }
+
