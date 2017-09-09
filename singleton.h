@@ -11,35 +11,43 @@
 #include <assert.h>
 #include <stdlib.h> // atexit
 
-namespace base
-{
+#ifndef NAMESPACE_BASE_BEGIN
+#define NAMESPACE_BASE_BEGIN namespace base { 
+#endif
+
+#ifndef NAMESPACE_END
+#define NAMESPACE_END }
+#endif
+
+
+NAMESPACE_BASE_BEGIN
 
 template<typename T>
 class singleton_t
 {
-    singleton_t(const singleton_t &);
-    singleton_t &operator = (const singleton_t &);
-    singleton_t();
-    ~singleton_t();
+  singleton_t(const singleton_t &);
+  singleton_t &operator = (const singleton_t &);
+  singleton_t();
+  ~singleton_t();
 
-    static pthread_once_t ponce_;
-    static T*             value_;
+  static pthread_once_t ponce_;
+  static T*             value_;
 
-    static void init()
-    {
-      if(NULL == value_){
-        value_ = new(std::nothrow) T();
-        ::atexit(destroy);
-      }
+  static void init()
+  {
+    if (NULL == value_) {
+      value_ = new(std::nothrow) T();
+      ::atexit(destroy);
     }
+  }
 
-    static void destroy()
-    {
-      typedef char T_must_be_complete_type[sizeof(T) == 0 ? -1 : 1];
-      T_must_be_complete_type dummy; (void) dummy;
-      delete value_;
-      value_ = NULL;
-    }
+  static void destroy()
+  {
+    typedef char T_must_be_complete_type[sizeof(T) == 0 ? -1 : 1];
+    T_must_be_complete_type dummy; (void)dummy;
+    delete value_;
+    value_ = NULL;
+  }
 
 public:
   static T& instance()
@@ -55,5 +63,8 @@ template<typename T>
 T* singleton_t<T>::value_ = NULL;
 template<typename T>
 pthread_once_t singleton_t<T>::ponce_ = PTHREAD_ONCE_INIT;
-}
+
+NAMESPACE_END; // namespace base 
+
 #endif
+
