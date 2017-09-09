@@ -6,50 +6,52 @@
 // Com Ole
 
 #include <unknwn.h>
-#include <windows.h>
 #include <assert.h>
 
+#ifdef WIN32
+#include <Windows.h>
+#endif
 
 class UnknownImp : public IUnknown
 {
-	UnknownImp(const UnknownImp &);
-	UnknownImp & operator = (const UnknownImp &);
-	//
+  UnknownImp(const UnknownImp &);
+  UnknownImp & operator = (const UnknownImp &);
+  //
 public:
-	UnknownImp() : m_ref(0) { ; }
-	//
+  UnknownImp() : m_ref(0) { ; }
+  //
 protected:
-	volatile unsigned long m_ref;
-	//
+  volatile unsigned long m_ref;
+  //
 
 };
 
-inline 
-void 
-lock_increment( volatile unsigned long  * ref)
+inline
+void
+lock_increment(volatile unsigned long  * ref)
 {
 #ifdef WIN32
-	InterlockedIncrement(ref);
+  InterlockedIncrement(ref);
 #else
-	__sync_add_and_fetch(ref, 1);
+  __sync_add_and_fetch(ref, 1);
 #endif
 }
 
-inline 
-void 
+inline
+void
 lock_decrement(volatile unsigned long  * ref)
 {
 #ifdef WIN32
-	InterlockedDecrement(ref);
+  InterlockedDecrement(ref);
 #else
-	__sync_sub_and_fetch(ref, 1);
+  __sync_sub_and_fetch(ref, 1);
 #endif
 }
 
 
-#define ADDREF		STDMETHOD_(ULONG, AddRef)() { lock_increment(&m_ref); return m_ref; }
-#define RELEASE		STDMETHOD_(ULONG, Release)() { assert(0 < m_ref); lock_decrement(&m_ref);ULONG ref = m_ref; if (0 == ref){ delete this; } return ref; }
-#define IBEGIN		STDMETHOD(QueryInterface)( REFIID iid, PVOID * ppv ) { *ppv = NULL;
+#define ADDREF		STDMETHOD_(unsigned long, AddRef)() { lock_increment(&m_ref); return m_ref; }
+#define RELEASE		STDMETHOD_(unsigned long, Release)() { assert(0 < m_ref); lock_decrement(&m_ref);unsigned long ref = m_ref; if (0 == ref){ delete this; } return ref; }
+#define IBEGIN		STDMETHOD(QueryInterface)( REFIID iid, void ** ppv ) { *ppv = NULL;
 #define IUNKNOWN			if (IID_IUnknown == iid) { *ppv = static_cast<IUnknown *>(static_cast<UnknownImp *>(this)); this->AddRef(); return S_OK; }
 #define I(Ix)				if (IID_##Ix == iid) { *ppv = static_cast<Ix*>(this); this->AddRef(); return S_OK; }
 #define IEND				return E_NOINTERFACE; }
