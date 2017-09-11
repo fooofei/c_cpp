@@ -60,6 +60,9 @@ public:
   /* contains directory and file */
   const std::wstring & value() const;
 
+  /* if the class object is create by Python, then there is no ctor called, use this replace */
+  int create();
+  void release();
 };
 
 NAMESPACE_END;

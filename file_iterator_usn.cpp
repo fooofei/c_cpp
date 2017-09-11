@@ -421,5 +421,29 @@ file_iterator_usn_t::value() const
   return p_->value();
 }
 
+int
+file_iterator_usn_t::create()
+{
+  if (!p_) {
+    p_ = new(std::nothrow)file_iterator_usn_impl_t();
+    if (!p_) {
+      return -1;
+    }
+    p_->clear();
+  }
+  return 0;
+}
+
+void
+file_iterator_usn_t::release()
+{
+  if (p_) {
+    p_->clear();
+    delete p_;
+  }
+  
+  p_ = 0;
+}
+
 NAMESPACE_END;
 
