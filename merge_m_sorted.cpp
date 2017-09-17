@@ -1,4 +1,5 @@
-
+/* the file shows merge sub sorted lists to one sorted lists
+*/
 
 #include <vector>
 #include <queue>

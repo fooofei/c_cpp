@@ -19,7 +19,7 @@
 
 #endif	// __cplusplus 
 
-// ÕâÆäÊµÊÇÎ¢ÈíµÄ afxtls.h ÖĞÌá¹©µÄÀà
+// è¿™å…¶å®æ˜¯å¾®è½¯çš„ afxtls.h ä¸­æä¾›çš„ç±»
 
 
 struct simple_list_t
@@ -48,7 +48,7 @@ struct simple_list_t
 
     void ** get_next_ptr(void * p) const
     {
-        // ÔÚ Node ½áµã½á¹¹ÌåÖĞ cb_next_offset_ Æ«ÒÆµÄÎ»ÖÃ£¬ÊÇ´æ·ÅµÄÏÂÒ»¸ö½áµãµÄÖ¸Õë£¬Òò´Ë ÕâÀï¿ÉÒÔ¿´×÷ ¶ş¼¶Ö¸Õë
+        // åœ¨ Node ç»“ç‚¹ç»“æ„ä½“ä¸­ cb_next_offset_ åç§»çš„ä½ç½®ï¼Œæ˜¯å­˜æ”¾çš„ä¸‹ä¸€ä¸ªç»“ç‚¹çš„æŒ‡é’ˆï¼Œå› æ­¤ è¿™é‡Œå¯ä»¥çœ‹ä½œ äºŒçº§æŒ‡é’ˆ
         return (void**)((unsigned char *)p+cb_next_offset_);
     }
 

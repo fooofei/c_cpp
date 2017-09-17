@@ -3,16 +3,16 @@
 /*                     
 IFileOperation interface replace the SHFileOperation
 2012_11_29 02:38 created
-2014_04_19	ÖØÐÂ·â×°ÎªDll£¬¼ÓÈë¶à×Ö½Ú´¦Àí£¬¸ü¸Ä·½·¨Ãû×ÖÊ××ÖÄ¸Ð¡Ð´
-2014_10_19  IFileOperation²»Ö§³ÖXP£¬¼ÓÈëXPµÄÅÐ¶Ï
-2014_10_31	ÖØÐÂ¹¹Ôì£¬²»ÔÙXP\Win7·Ö¿ª±àÒë£¬ÍêÉÆÒì³£´¦Àí£¬ÍêÉÆº¯ÊýÃû×Ö,È¥µôÀàÃû¸ÄÎªÃüÃû¿Õ¼ä
-2014_11_22  gotoÓï¾äÖØÐÂ»»Îª d
-2015_01_08	²ÎÊýÔö¼ÓHWNDºÍ²Ù×÷±êÖ¾flags¡£do {}  while( 0 ) ;
-2015_01_10	ÎªMoveFileºÍCopyFileÔö¼ÓfCreateDesFolder²ÎÊý¡£
-2015_03_03	ÐÂÔöx64Ö®ºó£¬ÒòÎª×ÜÊÇµ÷ÓÃ³Ékernel32.dllÀïµÄº¯Êý£¬ËùÒÔÈ¥µôÁËÃüÃû¿Õ¼ä
-2015_07_28	ÐÞ¸ÄÎªComµ÷ÓÃ·½Ê½£¬¼ò»¯µ÷ÓÃ
-2015_08_22	³¢ÊÔÊ¹ÓÃ pimpl ÊÖ·¨·â×°dll£¬µ«ÊÇ²»ÄÜÊ¹ÓÃLoadLibraryÊ¹ÓÃclass,³¢ÊÔÊ§°Ü
-2017_09_10  00:20 ÖØÐÂÊáÀí´úÂë pimpl ÊÖ·¨ÊÇÄÜÓÃÔÚÕâÀïµÄ£¬²»Òª¿¼ÂÇ dll ÁË£¬²¢²»·½±ã
+2014_04_19	é‡æ–°å°è£…ä¸ºDllï¼ŒåŠ å…¥å¤šå­—èŠ‚å¤„ç†ï¼Œæ›´æ”¹æ–¹æ³•åå­—é¦–å­—æ¯å°å†™
+2014_10_19  IFileOperationä¸æ”¯æŒXPï¼ŒåŠ å…¥XPçš„åˆ¤æ–­
+2014_10_31	é‡æ–°æž„é€ ï¼Œä¸å†XP\Win7åˆ†å¼€ç¼–è¯‘ï¼Œå®Œå–„å¼‚å¸¸å¤„ç†ï¼Œå®Œå–„å‡½æ•°åå­—,åŽ»æŽ‰ç±»åæ”¹ä¸ºå‘½åç©ºé—´
+2014_11_22  gotoè¯­å¥é‡æ–°æ¢ä¸º d
+2015_01_08	å‚æ•°å¢žåŠ HWNDå’Œæ“ä½œæ ‡å¿—flagsã€‚do {}  while( 0 ) ;
+2015_01_10	ä¸ºMoveFileå’ŒCopyFileå¢žåŠ fCreateDesFolderå‚æ•°ã€‚
+2015_03_03	æ–°å¢žx64ä¹‹åŽï¼Œå› ä¸ºæ€»æ˜¯è°ƒç”¨æˆkernel32.dllé‡Œçš„å‡½æ•°ï¼Œæ‰€ä»¥åŽ»æŽ‰äº†å‘½åç©ºé—´
+2015_07_28	ä¿®æ”¹ä¸ºComè°ƒç”¨æ–¹å¼ï¼Œç®€åŒ–è°ƒç”¨
+2015_08_22	å°è¯•ä½¿ç”¨ pimpl æ‰‹æ³•å°è£…dllï¼Œä½†æ˜¯ä¸èƒ½ä½¿ç”¨LoadLibraryä½¿ç”¨class,å°è¯•å¤±è´¥
+2017_09_10  00:20 é‡æ–°æ¢³ç†ä»£ç  pimpl æ‰‹æ³•æ˜¯èƒ½ç”¨åœ¨è¿™é‡Œçš„ï¼Œä¸è¦è€ƒè™‘ dll äº†ï¼Œå¹¶ä¸æ–¹ä¾¿
             Not compitable with Windows XP / NOT TEST
 /************************************************************************/
 #ifndef BASE_FILE_FILE_OPEARTION_H_
