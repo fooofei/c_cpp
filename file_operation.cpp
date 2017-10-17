@@ -78,6 +78,7 @@ struct file_operation_t::file_operation_impl_t
     {
       if (!file_) {
         hr = E_NOTIMPL;
+        break;
       }
       hr = SHCreateItemFromParsingName(s.c_str(), 0, IID_IShellItem, (void**)&iShellItem);
       if (FAILED(hr)) {
@@ -110,6 +111,7 @@ struct file_operation_t::file_operation_impl_t
     {
       if (!file_) {
         hr = E_NOTIMPL;
+        break;
       }
 
       hr = SHCreateItemFromParsingName(src.c_str(), 0, IID_IShellItem, (void**)&isrc);
@@ -142,6 +144,7 @@ struct file_operation_t::file_operation_impl_t
     {
       if (!file_) {
         hr = E_NOTIMPL;
+        break;
       }
       hr = SHCreateItemFromParsingName(src.c_str(), 0, IID_IShellItem, (void**)&isrc);
       if (FAILED(hr)) {
@@ -173,6 +176,7 @@ struct file_operation_t::file_operation_impl_t
     {
       if (!file_) {
         hr = E_NOTIMPL;
+        break;
       }
       hr = SHCreateItemFromParsingName(src.c_str(), 0, IID_IShellItem, (void**)&iShellItem);
       if (FAILED(hr)) {
