@@ -7,13 +7,6 @@
 
 
 
-inline
-bool
-is_valid_hex(char c)
-{
-  return (('0'<=c && c<= '9') || ('A'<=c && c<='F'));
-}
-
 /* ['0'-'9''A'-'F'] convert to [0-9A-F] */
 inline
 int 
@@ -28,6 +21,12 @@ upperhex_char_2_hex(char c, uint8_t * out)
     *out = (uint8_t)(c - 'A' + 0x0A);
     return 0;
   }
+
+  if (c >= 'a' && c <= 'f') {
+    *out = (uint8_t)(c - 'a' + 0x0A);
+    return 0;
+  }
+
   return -1;
 }
 
@@ -41,7 +40,7 @@ upperhex_hex_2_char(uint8_t c, char * out)
   }
 
   if (c>=0x0A && c <= 0x0F ){
-    *out = (char)(c-0x0A+'A');
+    *out = (char)(c-0x0A+'a');
     return 0;
   }
 
@@ -49,12 +48,22 @@ upperhex_hex_2_char(uint8_t c, char * out)
 }
 
 
+/* If the hex string is 'ac' then the hex value is 0xac,
+  the v2 =0xac , the v1.low=0x0c, v1.high=0x0a
+*/
 
 struct hex_t
 {
   /* total 8 bits */
-  uint8_t low : 4;
-  uint8_t high : 4;
+
+  union {
+    struct value_t{
+      uint8_t low : 4;
+      uint8_t high : 4;
+    }v1;
+    uint8_t  v2;
+  };
+  
 
   void clear() {
     memset(this, 0, sizeof(*this));
@@ -74,28 +83,20 @@ struct hex_t
     int err;
     const wchar_t * errs = L"Hex to Str Error , Invalid Hex , must [0-9A-F]";
 
-    if (!is_valid_hex(*p)) {
-      throw (errs);
-      // return -1;
-    }
+   
 
     err = upperhex_char_2_hex(*p, &t);
     if (err) {
       throw(errs);
     }
-    high = t;
+    v1.high = t;
     p += 1;
 
-    if (!is_valid_hex(*p)) {
-      throw (errs);
-      // return -1;
-    }
-
     err = upperhex_char_2_hex(*p, &t);
     if (err) {
       throw(errs);
     }
-    low = t;
+    v1.low = t;
 
     return 0;
   }
@@ -108,13 +109,13 @@ struct hex_t
   char hex_low()
   {
     char c;
-    upperhex_hex_2_char(low, &c);
+    upperhex_hex_2_char(v1.low, &c);
     return c;
   }
   char hex_high()
   {
     char c;
-    upperhex_hex_2_char(high, &c);
+    upperhex_hex_2_char(v1.high, &c);
     return c;
   }
 };
