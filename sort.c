@@ -144,3 +144,11 @@ void test_quick_sort()
 
     printf("pass test_quick_sort()\n");
 }
+
+
+int
+main()
+{
+    test_quick_sort();
+    return 0;
+}

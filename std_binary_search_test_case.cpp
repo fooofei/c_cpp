@@ -2,6 +2,8 @@
 
 
 #include <algorithm>
+#include <inttypes.h>
+#include <stdint.h>
 
 #include "common.h"
 
@@ -27,7 +29,7 @@ _test_std_framework(
             fprintf(stderr, "unexpect -> %s:%d, search %u, expect index=%u, result index=%u\n", __FILE__, __LINE__
                 , *p
                 , *(p + 1)
-                , r - b_dst
+                , (uint32_t)(r - b_dst)
             );
             fflush(stderr);
         }
@@ -123,4 +125,11 @@ test_std_binary_search()
     _test1();
     _test3();
     printf("pass test_std_binary_search()\n");
+}
+
+int 
+main()
+{
+    test_std_binary_search();
+    return 0;
 }

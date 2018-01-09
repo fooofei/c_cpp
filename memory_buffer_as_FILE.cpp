@@ -9,8 +9,9 @@ int main()
     buffer.resize(2048);
     FILE * f = 0;
 
+#ifndef WIN32
     f = fmemopen(&buffer[0], buffer.size(), "wb");
-
+#endif
     if (f)
     {
 
@@ -18,7 +19,7 @@ int main()
         fprintf(f, "hello");
         fprintf(f, "world");
        
-        fflush(f);
+        fflush(f); // must call fflush
         printf("%s\n", buffer.c_str()); // nice hello world
 
         fclose(f);

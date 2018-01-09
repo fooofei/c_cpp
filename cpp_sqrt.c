@@ -1,10 +1,11 @@
 
 
-#include <cmath>
-#include <cstdio>
+#include <math.h>
+#include <stdio.h>
 
 /* 2 = sqrt1(4) */
-double sqrt1(double value)
+double 
+sqrt1(double value)
 {
   double t = 0;
   double t2 = 0;
@@ -24,7 +25,8 @@ double sqrt1(double value)
 }
 
 //
-double sqrt_newton(double value)
+double 
+sqrt_newton(double value)
 {
   double root = 1;
   double t = 0;
@@ -42,7 +44,8 @@ double sqrt_newton(double value)
 
 // the algorithm come from a schoolmates of colleage
 
-double sqrt_jinmengyao(double value)
+double 
+sqrt_jinmengyao(double value)
 {
   double delta = 1;
   double root = 0;
@@ -69,7 +72,8 @@ double sqrt_jinmengyao(double value)
 
 typedef double (*pfn_sqrt)(double);
 
-int test(pfn_sqrt fn, const char *label)
+int 
+test(pfn_sqrt fn, const char *label)
 {
   int ar[] = {9, 10, 8, 5, 6, 7, 0};
 
@@ -80,7 +84,8 @@ int test(pfn_sqrt fn, const char *label)
   return 0;
 }
 
-int main()
+int 
+main()
 {
   test(sqrt1, "sqrt1");
   printf("\n");

@@ -447,3 +447,9 @@ file_iterator_usn_t::release()
 
 NAMESPACE_END;
 
+
+int 
+main()
+{
+    return 0;
+}

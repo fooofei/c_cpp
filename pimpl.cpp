@@ -26,7 +26,7 @@ public:
 // implementation (widget.cpp)
 
 
-#include "widget.h"
+// #include "widget.h"
 #include <iostream>
 #define DESC_SELF impl * self = static_cast<impl *>(this);
 #define CONST_SELF const impl * self = static_cast<const impl *>(this);

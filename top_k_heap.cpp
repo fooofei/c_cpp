@@ -10,7 +10,7 @@
 // 注意，建立最大堆/最小堆的过程需要循环下沉， 最大堆/最小堆 是父节点都比叶子大/小的堆。下面的函数建立的堆，不符合这个要求。
 void heapify(int * begin, int * end)
 {
-    for (int n = end-begin-1;n>1;--n)
+    for (int n = int(end-begin-1);n>1;--n)
     {
         if(*(begin+n)<*(begin+n/2))
         {

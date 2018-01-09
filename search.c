@@ -2,18 +2,19 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdio.h>
+#include <inttypes.h>
 
 #include "search.h"
 
 
 void
-_search_show_array_items_address(const uint32_t * b, size_t size)
+_search_show_array_items_address(const uint32_t * b, uint32_t size)
 {
-    size_t i = 0;
+    uint32_t i = 0;
 
     for (i = 0; i < size; i++)
     {
-        printf("[%u] %p %u\n", i, b, *b);
+        printf("[%"PRIu32"] %p %"PRIu32"\n", i, (void*)b, *b);
         b += 1;
     }
 
@@ -181,4 +182,11 @@ test_binary_search()
     _test_search_upper_bound();
 
     printf("pass test_binary_search()\n");
+}
+
+int
+main()
+{
+    test_binary_search();
+    return 0;
 }

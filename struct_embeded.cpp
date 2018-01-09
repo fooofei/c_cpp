@@ -23,7 +23,7 @@ struct sb_t
 int main()
 {
 
-    printf("sizeof(sa_t) =%d, sizeof(sb_t)=%d\n"
+    printf("sizeof(sa_t) =%zu, sizeof(sb_t)=%zu\n"
         , sizeof(struct sa_t)
         , sizeof(struct sb_t)
         );// 8 8

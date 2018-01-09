@@ -246,3 +246,10 @@ file_operation_t::rename_item(const std::wstring & arg0, const std::wstring & ar
 {
   return p_->rename_item(arg0, arg1);
 }
+
+
+int
+main()
+{
+    return 0;
+}

@@ -162,3 +162,27 @@ str2hex(const std::string & str, std::string & dst)
 
   return 0;
 }
+
+
+int 
+main()
+{
+    std::string hex = "6162636465666768414243444546";
+    std::string str = "abcdefghABCDEF";
+
+    std::string temp;
+    bool b;
+
+    hex2str(hex, temp);
+
+    b = (temp == str);
+    printf("%s hex2str()\n", (b?"pass":"fail"));
+    
+    temp.clear();
+
+    str2hex(str, temp);
+    b = (temp == hex);
+    printf("%s str2hex()\n", (b ? "pass" : "fail"));
+
+    return 0;
+}

@@ -52,6 +52,7 @@ struct thread_local_data_t
     global_data = 0;
   }
 };
+
 uint32_t thread_func(void *arg)
 {
   thread_local_data_t *p = (thread_local_data_t *)arg;
