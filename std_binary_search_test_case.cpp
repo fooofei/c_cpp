@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <inttypes.h>
 #include <stdint.h>
+#include <stdio.h>
 
 #include "common.h"
 

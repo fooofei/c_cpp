@@ -10,12 +10,8 @@ void print_two_int(two_int_type * p)
 
 void intermediate(two_int_type v)
 {
-    print_two_int(&v);  // compile error
+    //print_two_int(&v);  // compile error
     // : error: cannot convert 'int**' to 'int (*)[2]' for argument '1' to 'void print_two_int(int (*)[2])'
     // msvc or g++ all error
 }
 
-int main()
-{
-    return 0;
-}

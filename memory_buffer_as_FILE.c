@@ -1,16 +1,19 @@
 
 #include <stdio.h>
 #include <stdint.h>
-#include <string>
+#include <string.h>
+#include <stdlib.h>
 
 int main()
 {
-    std::string buffer;
-    buffer.resize(2048);
+    char * buffer = 0;
     FILE * f = 0;
 
+    enum{size=2048,};
+    buffer = (char*)calloc(1,size);
+
 #ifndef WIN32
-    f = fmemopen(&buffer[0], buffer.size(), "wb");
+    f = fmemopen(&buffer[0], size, "wb");
 #endif
     if (f)
     {
@@ -20,9 +23,14 @@ int main()
         fprintf(f, "world");
        
         fflush(f); // must call fflush
-        printf("%s\n", buffer.c_str()); // nice hello world
+        printf("%s\n", buffer); // nice hello world
 
         fclose(f);
+    }
+
+    if (buffer)
+    {
+        free(buffer);
     }
 
     printf("end\n");

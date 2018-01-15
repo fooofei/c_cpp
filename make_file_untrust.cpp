@@ -73,7 +73,7 @@ error:
     CoUninitialize();
 }
 
-// ÎÒ×Ô¼ºµÄ ÓĞµãÂÒ ÓÃµÄÊ±ºòÔÙ¸Ä
+// æˆ‘è‡ªå·±çš„ æœ‰ç‚¹ä¹± ç”¨çš„æ—¶å€™å†æ”¹
 void MakeFileUnsafe2()
 {
 
@@ -115,4 +115,11 @@ void MakeFileUnsafe2()
 
 
     CoUninitialize();
+}
+
+
+int 
+main()
+{
+    return 0;
 }

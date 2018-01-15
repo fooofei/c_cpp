@@ -1,6 +1,9 @@
 
 #include <cstdio>
 #include <string>
+#include <string.h>
+#include <stdlib.h>
+
 
 struct node_t
 {

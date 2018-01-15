@@ -1,6 +1,8 @@
 
 
 #include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "hex_strs.h"
 
@@ -56,11 +58,12 @@ struct hex_t
 {
   /* total 8 bits */
 
+    struct value_t {
+        uint8_t low : 4;
+        uint8_t high : 4;
+    };
   union {
-    struct value_t{
-      uint8_t low : 4;
-      uint8_t high : 4;
-    }v1;
+    struct value_t v1;
     uint8_t  v2;
   };
   

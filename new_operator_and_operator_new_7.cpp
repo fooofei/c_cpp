@@ -1,6 +1,8 @@
 
 #include <cstdio>
 #include <string>
+#include <string.h>
+#include <stdlib.h>
 
 struct node_t
 {
@@ -15,8 +17,8 @@ struct node_t
     }
 
     // http://blog.csdn.net/solstice/article/details/6198937
-    // ÕâÀïÓĞÒ»¾ä»°£¬Ò»µ©ÓĞÈçÏÂÖØÔØ£¬ÔòÒ»¶¨ÒªÖØÔØ void operator delete (void * p),
-    // ½Ó×ÅÍÆ£¬ÓÖÒªÖØÔØ void * operator new (size_t size), ÎªÊ²Ã´£¿ÒòÎª node_t * p1 = new node_t; ½«ÎŞ·¨Ê¹ÓÃ¡£
+    // è¿™é‡Œæœ‰ä¸€å¥è¯ï¼Œä¸€æ—¦æœ‰å¦‚ä¸‹é‡è½½ï¼Œåˆ™ä¸€å®šè¦é‡è½½ void operator delete (void * p),
+    // æ¥ç€æ¨ï¼Œåˆè¦é‡è½½ void * operator new (size_t size), ä¸ºä»€ä¹ˆï¼Ÿå› ä¸º node_t * p1 = new node_t; å°†æ— æ³•ä½¿ç”¨ã€‚
     static void * operator new (size_t size,const char * , long)
     {
         printf("call operator new\n");
@@ -24,8 +26,8 @@ struct node_t
     }
 
     // if not write, then will have one warning,
-    // ¡°void *node_t::operator new(size_t,const char *,long)¡±: Î´ÕÒµ½Æ¥ÅäµÄÉ¾³ıÔËËã·û£»Èç¹û³õÊ¼»¯Òı·¢Òì³££¬Ôò²»»áÊÍ·ÅÄÚ´æ
-    // ËµÃ÷Õâ¸öÖØÔØÖ»ÓĞÔÚ³õÊ¼»¯Ê§°ÜµÄÊ±ºò²ÅÊ¹ÓÃµ½£¬Õı³£ delete ÊÇÊ¹ÓÃ²»µ½µÄ
+    // â€œvoid *node_t::operator new(size_t,const char *,long)â€: æœªæ‰¾åˆ°åŒ¹é…çš„åˆ é™¤è¿ç®—ç¬¦ï¼›å¦‚æœåˆå§‹åŒ–å¼•å‘å¼‚å¸¸ï¼Œåˆ™ä¸ä¼šé‡Šæ”¾å†…å­˜
+    // è¯´æ˜è¿™ä¸ªé‡è½½åªæœ‰åœ¨åˆå§‹åŒ–å¤±è´¥çš„æ—¶å€™æ‰ä½¿ç”¨åˆ°ï¼Œæ­£å¸¸ delete æ˜¯ä½¿ç”¨ä¸åˆ°çš„
     //
 
     static void operator delete (void * p,const char *, long)
@@ -34,7 +36,7 @@ struct node_t
         free(p);
     }
 
-    // Ğ´ÁË void operator delete (void * p,const char *, long) £¬È´²»Ğ´Õâ¸ö£¬»á±àÒëÊ§°Ü£¬Ã»ÓĞ¿ÉÓÃµÄ delete (void *) Ê¹ÓÃ
+    // å†™äº† void operator delete (void * p,const char *, long) ï¼Œå´ä¸å†™è¿™ä¸ªï¼Œä¼šç¼–è¯‘å¤±è´¥ï¼Œæ²¡æœ‰å¯ç”¨çš„ delete (void *) ä½¿ç”¨
     // 
     static void operator delete (void * p)
     {

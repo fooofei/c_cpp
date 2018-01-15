@@ -62,3 +62,10 @@ test_flexible_array()
 
     printf("pass %s()\n", __FUNCTION__);
 }
+
+int 
+main()
+{
+    test_flexible_array();
+    return 0;
+}

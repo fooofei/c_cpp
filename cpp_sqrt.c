@@ -76,8 +76,9 @@ int
 test(pfn_sqrt fn, const char *label)
 {
   int ar[] = {9, 10, 8, 5, 6, 7, 0};
+  int *p;
 
-  for (int *p = ar; *p; ++p)
+  for (p = ar; *p; ++p)
   {
     printf("%s:%d ->%.10f\n", label, *p, fn(*p));
   }
