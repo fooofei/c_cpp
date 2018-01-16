@@ -14,7 +14,7 @@
         { \
         fflush(stdout); \
         fflush(stderr); \
-        fprintf(stderr, "unexpect-> %s:%d\n", __FILE__, __LINE__); \
+        fprintf(stderr, "unexpect %s  (%s:%d)\n",#expr, __FILE__, __LINE__); \
         } \
     } while (0)
 
