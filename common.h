@@ -12,9 +12,8 @@
     do { \
     if(!(expr)) \
         { \
-        fflush(stdout); \
-        fflush(stderr); \
         fprintf(stderr, "unexpect %s  (%s:%d)\n",#expr, __FILE__, __LINE__); \
+        fflush(stderr);\
         } \
     } while (0)
 
