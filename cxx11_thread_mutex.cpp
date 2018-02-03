@@ -4,13 +4,13 @@
 
 #include <stdio.h>
 
-#ifdef WIN32
-#include "detectmemleak.h"
+
+#include "./c_cpp_common/crt_dbg_leak.h"
 #ifdef _DEBUG
 /* auto report memory leak on Windows debug */
-struct _crt_dbg_leak_t g_mem(0);
+_crt_dbg_leak_t g_mem(0);
 #endif
-#endif
+
 
 #include <list>
 #include <mutex>

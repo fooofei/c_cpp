@@ -9,29 +9,21 @@ if(APPLE)
 endif()
 
 
+foreach(i ${CMAKE_CXX_COMPILE_FEATURES})
+  message(STATUS "compiler support ${i}")
+endforeach()
 
-add_executable(test_case 
+
+
+add_executable(test_cast
     ${CMAKE_CURRENT_SOURCE_DIR}/cast_pointer_2_uint32_nowarning.c
 )
 if(WIN32)
-	target_compile_options(test_case PRIVATE /source-charset:utf-8 /execution-charset:utf-8)
+	target_compile_options(test_cast PRIVATE /source-charset:utf-8 /execution-charset:utf-8)
 endif()
 
-add_executable(test_sort
-    ${CMAKE_CURRENT_SOURCE_DIR}/sort.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/sort.c
-)
-if(WIN32)
-	target_compile_options(test_sort PRIVATE /source-charset:utf-8 /execution-charset:utf-8)
-endif()
 
-add_executable(test_search
-    ${CMAKE_CURRENT_SOURCE_DIR}/search.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/search.c
-)
-if(WIN32)
-	target_compile_options(test_search PRIVATE /source-charset:utf-8 /execution-charset:utf-8)
-endif()
+
 
 
 add_executable(test_sqrt
@@ -48,6 +40,9 @@ endif()
 if(WIN32)
 add_executable(test_cxx11_thread_mutex
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx11_thread_mutex.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/c_cpp_common/crt_dbg_leak.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/c_cpp_common/crt_dbg_leak.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/c_cpp_common/crt_dbg_leak.h
 )
 if(WIN32)
 	target_compile_options(test_cxx11_thread_mutex PRIVATE /source-charset:utf-8 /execution-charset:utf-8)
@@ -79,9 +74,6 @@ if(WIN32)
 endif()
 
 
-add_executable(test_memory_buffer_as_file
-    ${CMAKE_CURRENT_SOURCE_DIR}/memory_buffer_as_FILE.c
-)
 
 add_executable(test_ostringstream_sprintf
     ${CMAKE_CURRENT_SOURCE_DIR}/ostringstream_sprintf.cpp
@@ -239,3 +231,15 @@ add_executable(test_howto_typedef_array
  ${CMAKE_CURRENT_SOURCE_DIR}/howto_typedef_array_1_error.cpp
  ${CMAKE_CURRENT_SOURCE_DIR}/howto_typedef_array_2_right.cpp
 )
+
+
+if(WIN32)
+add_executable(test_cache
+${CMAKE_CURRENT_SOURCE_DIR}/test_cache_coherency.cpp
+)
+set_target_properties(test_cache PROPERTIES  CXX_STANDARD 11)
+endif()
+
+if(WIN32)
+	target_compile_options(test_cache PRIVATE /source-charset:utf-8 /execution-charset:utf-8)
+endif()
