@@ -26,6 +26,7 @@ restorecore()
 }
 
 # from http://man7.org/linux/man-pages/man5/core.5.html
+# in /var/lib/systemd/coredump/
 setsystemdcore()
 {
   viewcore
