@@ -11,6 +11,6 @@ ulimit -c unlimited
 
 echo "now core_pattern is:" `cat $corepath` ", the limit is :" `ulimit -c`
 
+rm -f ./core.info
 ./crash
-
 less ./core.info
