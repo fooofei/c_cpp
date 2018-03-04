@@ -23,17 +23,32 @@
 import os
 import sys
 import datetime
+import io
 
 curpath = os.path.realpath(__file__)
 curpath = os.path.dirname(curpath)
 
+def redirect_to_file(fullpath):
+  if os.path.exists(fullpath):
+    os.remove(fullpath)
+
+  with open(fullpath,'wb') as fw:
+    while 1:
+      c = sys.stdin.read(1024)
+      if not c:
+        break
+      fw.write(c)
+
+def redirect_to_gzfile(fullpath):
+  pass
 
 def entry():
-
-  with open(os.path.join(curpath,'.called'),'ab+') as fw:
-    fw.write('{dt}'.format(dt=datetime.datetime.now()))
-
-  filename = '.tmp'
+  now = datetime.datetime.now()
+  now = now.strftime('%s')
+  filename = 'core_time-{t}_pid-{pid}_uid-{uid}_host-{hostname}_name-{execname}'.format(
+    t=now,pid=sys.argv[1],uid=sys.argv[2],
+    hostname=
+  )
   fullpath =os.path.join(curpath,filename)
   if os.path.exists(fullpath):
     os.remove(fullpath)
@@ -46,4 +61,7 @@ def entry():
 
 
 if __name__ == '__main__':
+  sy = sys.version_info
+  if not (sy.major>=2 and sy.minor >= 7):
+    raise  ValueError('only support Python version up 2.7.x')
   entry()
