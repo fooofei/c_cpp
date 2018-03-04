@@ -1,7 +1,0 @@
-argc=5
-argc[0]=</home/test_samba_share/2temp/core_pattern_pipe_test>
-argc[1]=<129378>
-argc[2]=<UID=0>
-argc[3]=<GID=0>
-argc[4]=<sig=11>
-Total bytes in core dump: 12718080

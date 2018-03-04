@@ -10,7 +10,9 @@ setcore()
 {
   viewcore
   echo "-----------------------------------------"
-  echo "|/home/test_samba_share/2temp/take_core.py %t %p %u %e" | sudo tee $corepath
+  pypath=$(readlink -f ./take_core.py)
+  echo "|$pypath %t %p %u %e" | sudo tee $corepath
+  #echo "|$pypath %t %p %u %e" > $corepath
   ulimit -c unlimited
   echo "-----------------------------------------"
   viewcore

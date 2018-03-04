@@ -24,6 +24,8 @@ import os
 import sys
 import datetime
 import io
+import contextlib
+import gzip
 
 curpath = os.path.realpath(__file__)
 curpath = os.path.dirname(curpath)
@@ -40,25 +42,31 @@ def redirect_to_file(fullpath):
       fw.write(c)
 
 def redirect_to_gzfile(fullpath):
-  pass
+  if os.path.exists(fullpath):
+    os.remove(fullpath)
+  if not fullpath.endswith('.gz'):
+    fullpath = fullpath + '.gz'
+  if os.path.exists(fullpath):
+    os.remove(fullpath)
+
+  with gzip.open(fullpath,'wb',compresslevel=1) as fw:
+    with contextlib.closing(io.BufferedWriter(fw)) as fww:
+      while 1:
+        c = sys.stdin.read(1024)
+        if not c:
+          break
+        fww.write(c)
+
 
 def entry():
   now = datetime.datetime.now()
   now = now.strftime('%s')
   filename = 'core_time-{t}_pid-{pid}_uid-{uid}_host-{hostname}_name-{execname}'.format(
     t=now,pid=sys.argv[1],uid=sys.argv[2],
-    hostname=
+    hostname=sys.argv[3],execname=sys.argv[4]
   )
   fullpath =os.path.join(curpath,filename)
-  if os.path.exists(fullpath):
-    os.remove(fullpath)
-  with open(fullpath,'wb') as fw:
-     while 0:
-      c = sys.stdin.read(4)
-      if not c:
-        break
-      fw.write(c)
-
+  redirect_to_file(fullpath)
 
 if __name__ == '__main__':
   sy = sys.version_info
