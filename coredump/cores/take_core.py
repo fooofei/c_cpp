@@ -63,6 +63,14 @@ def redirect_to_gzfile(fullpath):
         fww.write(c)
 
 
+def tick_called():
+  '''
+  用来记录被调用
+  '''
+  called = os.path.join(curpath,'called')
+  with open(called,'ab+') as fw:
+    fw.write('{t} called\n'.format(t=datetime.datetime.now()))
+
 def entry():
 
   now = datetime.datetime.now()

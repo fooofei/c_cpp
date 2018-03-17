@@ -12,7 +12,7 @@ setcore()
   echo "-----------------------------------------"
   pypath=$(readlink -f ./take_core.py)
   echo "|/usr/bin/python2 $pypath %p %u %h %e" | sudo tee $corepath
-  ulimit -c unlimited
+  #ulimit -c unlimited
   echo "-----------------------------------------"
   viewcore
 }
@@ -32,7 +32,7 @@ setsystemdcore()
   viewcore
   echo "-----------------------------------------"
   echo "|/usr/lib/systemd/systemd-coredump %P %u %g %s %t %c %e" | sudo tee $corepath
-  ulimit -c unlimited
+  #ulimit -c unlimited
   echo "-----------------------------------------"
   viewcore
 }
