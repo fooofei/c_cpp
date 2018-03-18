@@ -63,70 +63,7 @@ core_filesize_zero()
 }
 
 
-// 
-/*  
-  make sure current user have right to write /proc/sys
-
-  gzip 对 pipe 不友好 output 一定要使用 > (重定向符号) 这个在 core_pattern 里不适用
-
-
-  失败:
-    ret = fprintf(f, "|/usr/bin/gzip > %s/core_%%t_%%p_%%u_%%e.gz", coredump_gen_path);
-    应该是 gzip 使用有问题
-  
-  失败
-    echo "|/bin/bash exec "echo" %p>$PWD/test.info  " > /proc/sys/kernel/core_pattern
-    echo "|exec "echo" %p>$PWD/test.info  " > /proc/sys/kernel/core_pattern
-
-  成功
-    less Makefile | exec  "gzip" > x.gz  
-
-  
-  失败
-    echo "|/usr/bin/tar - -zcvf /home/test_samba_share/source/c_proper_coredump/unix/coredumps/whatever.tar.gz" > /proc/sys/kernel/core_pattern
-    创建了空文件
-  
-  失败
-    less Makefile |tar - -zcvf  x.tar.gz   
-
-  成功 
-    tar -zcvf x.tar.gz </bin/cat Makefile
-
-  ret = fprintf(f, "%s", "|/root/compress_core.sh %t %p %u %e");
-  time, pid, uid, executable_name,
-  please see man 5 core
-  缺陷 在 ulimit -c 为 0 的情况下， 就是不输出 coredump  这个 tar 命令也会被调用 并且生成了空文件
-
-  kill -3/-6 to make a run process to generate core dump.
-  kill -s -QUIT/-ABRT
-
-  https://www.linuxquestions.org/questions/programming-9/core-dump-to-a-pipe-is-failing-4175445816/
-
-  分析源代码:
-    download tar http://vault.centos.org/7.2.1511/os/Source/SPackages/tar-1.26-29.el7.src.rpm
-    http://ftp.gnu.org/gnu/tar/
-
-  ulimit -a 查看包括 core 在内的 其他文件大小限制
-  ulimit -c 控制产生单个 core 文件的大小 单位 KB
-
-  另一个配置文件 
-    /etc/systemd/coredump.conf
-  
-  另一个配置文件
-    /etc/security/limits.conf
-    配置 用户 test 的 文件大小限制为 1GB，如下
-    test       hard  fsize  1024000
-
-  coredumpctl 操作 core 文件
-    https://www.freedesktop.org/software/systemd/man/coredumpctl.html
-
-  资料阅读
-    超大 coredump （20G）的曲折救国方法
-    [拒绝超大coredump - 用backtrace和addr2line搞定异常函数栈] https://zhuanlan.zhihu.com/p/31630417
-
-  core_pattern 文件的 global 性质讨论：
-    https://stackoverflow.com/questions/30637720/how-to-change-core-pattern-only-for-a-particular-application?answertab=active#tab-top
-*/
+// make sure current user have right to write /proc/sys
 
 // out the created file path
 static int 

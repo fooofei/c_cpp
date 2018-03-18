@@ -17,13 +17,6 @@
 
 ### https://favoorr.github.io/2017/02/10/learn-gdb-from-brendan/
 
-### 长时间被困在 core_pattern 设置了后，无法生成 core
-
-
-### 测试的时候发现不稳定
-  不稳定1 同样的步骤 有时候能报告生成 core 有时候不能
-  不稳定2 报告生成了 core ，但是找不到
-
 '''
 import os
 import sys
