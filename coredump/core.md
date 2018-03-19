@@ -59,7 +59,7 @@
   time, pid, uid, executable_name
 
 10 Docker 不要给 Docker 任何为了修改 core 的权限，不必要
-  core 的设置就在 host 进行就好
+  core 的设置就在 host 进行就好，host 设置了后，Docker Container 什么都不要配置。
 
   man 5 core 又这样一句话需要解读 
   The process created to run the program runs as user and group root.

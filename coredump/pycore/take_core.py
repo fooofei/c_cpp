@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 #coding=utf-8
 '''
 
@@ -12,10 +12,13 @@
 
 ###
   容器里对 core 对操作会持久化到 image 里
-  预期在 container 中做的修改 如果不 commit ，下次从相同到 image 进入 container
-  core 应该还是未修改的， 在 macOS 测试却是修改过的
+  预期在 container 中对 /proc/sys/kernel/core_pattern 做的修改 如果不 commit ，
+  下次从相同到 image 进入 container core 应该还是未修改的，
+  在 macOS 测试却是修改过的
 
-### https://favoorr.github.io/2017/02/10/learn-gdb-from-brendan/
+###
+  core dump 的小说明
+  https://favoorr.github.io/2017/02/10/learn-gdb-from-brendan/
 
 '''
 import os
