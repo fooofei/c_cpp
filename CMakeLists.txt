@@ -234,14 +234,14 @@ add_executable(test_howto_typedef_array
 
 
 if(WIN32)
-add_executable(test_cache
+add_executable(test_cache_coherency
 ${CMAKE_CURRENT_LIST_DIR}/test_cache_coherency.cpp
 )
-set_target_properties(test_cache PROPERTIES  CXX_STANDARD 11)
+set_target_properties(test_cache_coherency PROPERTIES  CXX_STANDARD 11)
 endif()
 
 if(WIN32)
-	target_compile_options(test_cache PRIVATE /source-charset:utf-8 /execution-charset:utf-8)
+	target_compile_options(test_cache_coherency PRIVATE /source-charset:utf-8 /execution-charset:utf-8)
 endif()
 
 
@@ -264,4 +264,10 @@ endif()
 
  add_executable(test_array_out_bound
     ${CMAKE_CURRENT_LIST_DIR}/array_out_bound.c
+    )
+
+
+
+ add_executable(test_binary_tree_no_recursion_free
+    ${CMAKE_CURRENT_LIST_DIR}/binary_tree_no_recursion_free.c
     )
