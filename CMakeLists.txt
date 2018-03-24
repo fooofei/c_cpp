@@ -258,3 +258,10 @@ if(NOT WIN32)
     )
     target_link_libraries(test_pthread_cond2 pthread)  
 endif()
+
+
+
+
+ add_executable(test_array_out_bound
+    ${CMAKE_CURRENT_LIST_DIR}/array_out_bound.c
+    )
