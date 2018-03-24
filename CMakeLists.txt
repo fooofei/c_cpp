@@ -271,3 +271,11 @@ endif()
  add_executable(test_binary_tree_no_recursion_free
     ${CMAKE_CURRENT_LIST_DIR}/binary_tree_no_recursion_free.c
     )
+
+
+
+add_executable(test_posix_getfilesize
+    ${CMAKE_CURRENT_LIST_DIR}/posix_getfilesize.c
+)
+
+    
