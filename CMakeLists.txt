@@ -303,3 +303,14 @@ endif()
 add_executable(test_upper_lower_case
     ${CMAKE_CURRENT_LIST_DIR}/upper_lower_case.c
 )
+
+
+
+
+add_executable(test_cpp_same_name_virtual_function
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_same_name_virtual_function.cc
+)
+if(WIN32)
+target_compile_options(test_cpp_same_name_virtual_function PRIVATE /source-charset:utf-8 /execution-charset:utf-8)
+endif()
+
