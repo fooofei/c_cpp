@@ -225,6 +225,7 @@ if(WIN32)
 add_executable(test_is_there_a_loop_by_stackoverflow
  ${CMAKE_CURRENT_LIST_DIR}/is_there_a_loop_by_stackoverflow.cpp
 )
+target_compile_options(test_is_there_a_loop_by_stackoverflow PRIVATE /source-charset:utf-8 /execution-charset:utf-8)
 endif()
 
 
@@ -286,3 +287,19 @@ add_executable(test_cpp_overloadfunction_derived
 if(WIN32)
 target_compile_options(test_cpp_overloadfunction_derived PRIVATE /source-charset:utf-8 /execution-charset:utf-8)
 endif()
+
+
+
+
+add_executable(test_strcmp_memcmp
+    ${CMAKE_CURRENT_LIST_DIR}/strcmp_memcmp.c
+)
+if(WIN32)
+target_compile_options(test_strcmp_memcmp PRIVATE /source-charset:utf-8 /execution-charset:utf-8)
+endif()
+
+
+
+add_executable(test_upper_lower_case
+    ${CMAKE_CURRENT_LIST_DIR}/upper_lower_case.c
+)
