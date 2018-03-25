@@ -74,7 +74,7 @@ error:
 }
 
 // 我自己的 有点乱 用的时候再改
-void MakeFileUnsafe2()
+void MakeFileUnsafe2(void)
 {
 
     CoInitialize( NULL );

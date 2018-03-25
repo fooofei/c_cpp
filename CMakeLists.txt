@@ -209,7 +209,9 @@ if(WIN32)
 add_executable(test_make_file_untrust
 ${CMAKE_CURRENT_LIST_DIR}/make_file_untrust.cpp
 )
+target_compile_options(test_make_file_untrust PRIVATE /source-charset:utf-8 /execution-charset:utf-8)
 endif()
+
 
 
 add_executable(test_kmp_prefix_array
@@ -278,4 +280,9 @@ add_executable(test_posix_getfilesize
     ${CMAKE_CURRENT_LIST_DIR}/posix_getfilesize.c
 )
 
-    
+add_executable(test_cpp_overloadfunction_derived
+    ${CMAKE_CURRENT_LIST_DIR}/cpp_overloadfunction_derived.cpp
+)
+if(WIN32)
+target_compile_options(test_cpp_overloadfunction_derived PRIVATE /source-charset:utf-8 /execution-charset:utf-8)
+endif()
