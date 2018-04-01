@@ -1,7 +1,7 @@
 
 /*
- Õâ¸ö¹¤³ÌÓÃÀ´Ö¤Ã÷  ring µÄ peek ÓÃ·¨£¬·Ç½ø³Ì A enqueue ½ø³Ì B dequeue µÄÓÃ·¨
- ¹²ÏíÄÚ´æÖÐµÄ±äÁ¿ cons_cur ËäÈ»¿çÁË½ø³Ì µ«ÊÇÒ²ÎÞÐèÍ¬²½±£»¤
+ è¿™ä¸ªå·¥ç¨‹ç”¨æ¥è¯æ˜Ž  ring çš„ peek ç”¨æ³•ï¼Œéžè¿›ç¨‹ A enqueue è¿›ç¨‹ B dequeue çš„ç”¨æ³•
+ å…±äº«å†…å­˜ä¸­çš„å˜é‡ cons_cur è™½ç„¶è·¨äº†è¿›ç¨‹ ä½†æ˜¯ä¹Ÿæ— éœ€åŒæ­¥ä¿æŠ¤
 */
 
 #pragma once
@@ -21,7 +21,7 @@ struct peek_ring
     uint32_t cons_cur;
 };
 
-// sem ÏÔÈ»Ã»ÓÐ mutex ¸ü¿ì
+// sem æ˜¾ç„¶æ²¡æœ‰ mutex æ›´å¿«
 
 #define NO_SYNC
 
@@ -29,6 +29,8 @@ struct peek_ring
 static inline void peek_ring_cons_cur_init(struct peek_ring * self)
 {
     (void)self;
+    self->cons_cur = self->rx_queue->cons.head; // ä»€ä¹ˆä½œç”¨
+    fprintf(stdout, "self->cons_cur = %u\n", self->cons_cur);
 }
 static inline void peek_ring_cons_cur_destroy(struct peek_ring * self)
 {
@@ -69,13 +71,12 @@ static inline uint32_t peek_ring_get_cons_cur(struct peek_ring * self)
 static inline void peek_ring_cons_cur_init(struct peek_ring * self)
 {
     // Use mutex for process sync.
-    // Not support by all platform ? 
-    // ²âÊÔÐ§¹ûÏÔÊ¾»¹²»Èç²»¼Ó
     pthread_mutexattr_t mutex_attr;
     pthread_mutexattr_init(&mutex_attr);
     pthread_mutexattr_setpshared(&mutex_attr, PTHREAD_PROCESS_SHARED);
     pthread_mutex_init(&self->mutex, &mutex_attr);
-    //pthread_mutex_init(&self->mutex, NULL); // ²»¼ÓµÄ»° Á½±ß¾ÍÎÞ·¨½øÐÐ ÊÇbug
+    //pthread_mutex_init(&self->mutex, NULL); // ä¸åŠ çš„è¯ ä¸¤è¾¹å°±æ— æ³•è¿›è¡Œ æ˜¯bug
+    self->cons_cur = self->rx_queue->cons.head;
 }
 static inline void peek_ring_cons_cur_destroy(struct peek_ring * self)
 {
@@ -106,6 +107,7 @@ static inline void peek_ring_cons_cur_init(struct peek_ring * self)
 {
     // first 1 for share between processes , 0 for shared between threads of one process
     sem_init(&self->sem, 1, 1);
+    self->cons_cur = self->rx_queue->cons.head;
 }
 static inline void peek_ring_cons_cur_destroy(struct peek_ring * self)
 {
@@ -113,7 +115,17 @@ static inline void peek_ring_cons_cur_destroy(struct peek_ring * self)
 }
 #endif
 
+/*
+ Return can peek count of the ring.
+*/
+static inline uint32_t peek_ring_get_count(struct peek_ring * self)
+{
+    uint32_t count;
+    uint32_t cons_cur = peek_ring_get_cons_cur(self);
 
+    count = self->rx_queue->prod.tail - cons_cur;
 
+    return count;
+}
 
 #define MASTER_MEMORY_ZONE_NAME "master_zone"

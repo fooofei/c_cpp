@@ -69,6 +69,11 @@ int enqueue(struct context * ctx, struct peek_ring * ring)
     }
     *p = ctx->count;
 
+    if (ring->rx_queue->prod.tail == ((1<3)-1))
+    {
+        // 队列计数 prod.head prod.tail cons.head cons.tail 经历了循环后会在这里输出
+        fprintf(stdout, "ring->rx_queue->prod.tail=10\n"); fflush(stdout);
+    }
 
     rc = rte_ring_enqueue(ring->rx_queue, p);
     
@@ -128,7 +133,8 @@ void dequeue(struct context * ctx, struct peek_ring * ring)
 int main(int argc, const char * argv[])
 {
     int rc;
-    const char ** argv2 = calloc(argc + 2, sizeof(const char *));
+    int argc2 = argc + 3;
+    const char ** argv2 = calloc(argc2, sizeof(const char *));
     int i;
     for (i = 0; i < argc; i += 1)
     {
@@ -137,12 +143,13 @@ int main(int argc, const char * argv[])
     // primary secondary auto
     argv2[i] = "-l"; i += 1;
     argv2[i] = "0-0"; i += 1;
+    argv2[i] = "--log-level=10"; i += 1;
     //argv2[i] = "--proc-type=secondary"; // 如果全用 secondary，在 slave 还存活的情况下开启 master 
     // 报错为  EAL: Could not open /dev/hugepages/rtemap_453
     // PANIC in rte_eal_init() :
     //   Cannot init memory
 
-    rc = rte_eal_init(argc+2, (char**)argv2);
+    rc = rte_eal_init(argc2, (char**)argv2);
     free(argv2);
     if (rc < 0)
     {
@@ -168,7 +175,8 @@ int main(int argc, const char * argv[])
     ring = zone->addr;
 
     memset(ring, 0, sizeof(struct peek_ring));
-    ring->rx_queue = rte_ring_create(MASTER_CREATE_RING_NAME, 1 << 4, 0, 0);
+    // rte_ring_init 没用到， 只用到了 rte_ring_create
+    ring->rx_queue = rte_ring_create(MASTER_CREATE_RING_NAME, 1 << 12, 0, 0);
     if (ring->rx_queue == NULL)
     {
         rte_panic("Fail rte_ring_create()");
@@ -179,7 +187,7 @@ int main(int argc, const char * argv[])
     memset(&ctx, 0, sizeof(struct context));
 
     
-    ring->cons_cur = ring->rx_queue->cons.head;
+   
 
     for (;;)
     {

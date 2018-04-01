@@ -44,10 +44,8 @@ struct context
 
 void peek(struct context * ctx, struct peek_ring * ring)
 {
-    uint32_t count;
+    uint32_t count = peek_ring_get_count(ring);
     uint32_t cons_cur = peek_ring_get_cons_cur(ring);
-
-    count = ring->rx_queue->prod.tail - cons_cur;
 
     if (count == 0)
     {
@@ -66,8 +64,7 @@ void peek(struct context * ctx, struct peek_ring * ring)
         if (ctx->count != *p)
         {
             // gdb 调试 *p 有值 但是为什么还是 print 0 呢？ 因为 就不应该在这里之前 cons_cur += 1
-            long long v2 = *p;
-            fprintf(stdout, "peek invalid ctx->count = %lld peek = %lld\n", (long long )ctx->count, v2);
+            fprintf(stdout, "peek invalid ctx->count = %lld peek = %lld\n", (long long )ctx->count, *p);
             if (*p == 0)
             {
                 fprintf(stdout, "cons_cur=%u i=%u (cons_cur + i) & ring->rx_queue->prod.mask=%u\n", cons_cur, i,
@@ -78,16 +75,14 @@ void peek(struct context * ctx, struct peek_ring * ring)
         }
         ctx->count += 1;
 
-        if (ctx->count % 1000000 ==0)
+        if ((ctx->count &(0x1000000-1)) ==0)
         {
-            fprintf(stdout, "peek %lld ", (long long)*p); fflush(stdout);
+            fprintf(stdout, "peek %lld-%"PRIx64 " ", (long long)*p, *p); fflush(stdout);
         }
 
         // 注意顺序  放到末尾通知
-        //ring->cons_cur += 1;
-
         // CAS not work
-        //__sync_fetch_and_add(&ring->cons_cur, 1); // 连同步都不需要了 CAS 也就用不到了 /
+        //__sync_fetch_and_add(&ring->cons_cur, 1);
 
         // 确实少了很多
         peek_ring_cons_cur_inc(ring);
@@ -100,8 +95,8 @@ void peek(struct context * ctx, struct peek_ring * ring)
 int main(int argc, const char * argv[])
 {
     int rc;
-
-    const char ** argv2 = calloc(argc + 3, sizeof(const char *));
+    int argc2 = argc + 4;
+    const char ** argv2 = calloc(argc2, sizeof(const char *));
     int i;
     for (i = 0; i < argc; i += 1)
     {
@@ -110,9 +105,10 @@ int main(int argc, const char * argv[])
     // primary secondary auto
     argv2[i] = "--proc-type=secondary"; i += 1;
     argv2[i] = "-l"; i += 1;
-    argv2[i] = "1-1";
+    argv2[i] = "1-1"; i += 1;
+    argv2[i] = "--log-level=10"; i += 1;
 
-    rc = rte_eal_init(argc+3, (char**)argv2);
+    rc = rte_eal_init(argc2, (char**)argv2);
     free(argv2);
     if (rc < 0)
     {
