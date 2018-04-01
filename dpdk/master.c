@@ -5,8 +5,8 @@ https://blog.csdn.net/chen98765432101/article/details/69367633
 
 环形队列 无锁队列
 # 无符号二进制数的环性
-有符号数 原码是人类可读的书写方式 反码是历史进程中的中间产物 缺陷是有 +0 -0 两个数存在
-补码是计算机对有符号数的表达方式 不易读
+    有符号数 原码是人类可读的书写方式 反码是历史进程中的中间产物 缺陷是有 +0 -0 两个数存在
+    补码是计算机对有符号数的表达方式 不易读
 # Compare And Set CAS  CPU 上 非lock 的同步机制
 
 */
@@ -14,6 +14,7 @@ https://blog.csdn.net/chen98765432101/article/details/69367633
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
 
 
 #include <rte_common.h>
@@ -67,6 +68,8 @@ int enqueue(struct context * ctx, struct peek_ring * ring)
         return -1;
     }
     *p = ctx->count;
+
+
     rc = rte_ring_enqueue(ring->rx_queue, p);
     
     if (rc < 0)
@@ -82,9 +85,10 @@ int enqueue(struct context * ctx, struct peek_ring * ring)
 
 void dequeue(struct context * ctx, struct peek_ring * ring)
 {
-    pthread_mutex_lock(&ring->mutex);
-    uint32_t can_dequeue_size = ring->cons_cur - ring->rx_queue->cons.tail;
-    pthread_mutex_unlock(&ring->mutex);
+    uint32_t cons_cur;
+    
+    cons_cur = peek_ring_get_cons_cur(ring);
+    uint32_t can_dequeue_size = cons_cur - ring->rx_queue->cons.tail;
     int rc;
     uint32_t i;
     uint64_t * obj=0;
@@ -132,7 +136,12 @@ int main(int argc, const char * argv[])
     }
     // primary secondary auto
     argv2[i] = "-l"; i += 1;
-    argv2[i] = "0-0";
+    argv2[i] = "0-0"; i += 1;
+    //argv2[i] = "--proc-type=secondary"; // 如果全用 secondary，在 slave 还存活的情况下开启 master 
+    // 报错为  EAL: Could not open /dev/hugepages/rtemap_453
+    // PANIC in rte_eal_init() :
+    //   Cannot init memory
+
     rc = rte_eal_init(argc+2, (char**)argv2);
     free(argv2);
     if (rc < 0)
@@ -143,8 +152,14 @@ int main(int argc, const char * argv[])
     struct peek_ring * ring;
     const struct rte_memzone * zone;
 
-    zone = rte_memzone_reserve(MASTER_MEMORY_ZONE_NAME,
-        sizeof(struct peek_ring), rte_socket_id(), RTE_MEMZONE_2MB);
+    zone = rte_memzone_lookup(MASTER_MEMORY_ZONE_NAME);
+    if (zone == 0)
+    {
+        zone = rte_memzone_reserve(MASTER_MEMORY_ZONE_NAME,
+            sizeof(struct peek_ring), rte_socket_id(), RTE_MEMZONE_2MB);
+    }
+
+    
 
     if (zone == 0)
     {
@@ -159,7 +174,7 @@ int main(int argc, const char * argv[])
         rte_panic("Fail rte_ring_create()");
     }
 
-    pthread_mutex_init(&ring->mutex,0);
+    peek_ring_cons_cur_init(ring);
     struct context ctx;
     memset(&ctx, 0, sizeof(struct context));
 
@@ -182,6 +197,7 @@ int main(int argc, const char * argv[])
         
     }
 
+    peek_ring_cons_cur_destroy(ring);
     rte_ring_free(ring->rx_queue);
     rte_memzone_free(zone);
 
