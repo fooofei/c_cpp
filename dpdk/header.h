@@ -1,7 +1,13 @@
 
 /*
- 这个工程用来证明  ring 的 peek 用法，非进程 A enqueue 进程 B dequeue 的用法
+ 这个工程用来证明  ring 的 peek 用法，不是进程 A enqueue 进程 B dequeue 的用法
  共享内存中的变量 cons_cur 虽然跨了进程 但是也无需同步保护
+ 
+ 1 peek_ring 中窥探偏移未加锁保护，限制了这个策略暂且只适合 1 个peek 进程
+  已经测试 A 进程 enqueue dequeue， B 进程 peek，不会有问题
+ 2 peek 进程一定要注意在 peek 结束完成后才能对 窥探偏移增加计数 不然 peek 的数据都是错误的
+ 
+ 
 */
 
 #pragma once
@@ -12,13 +18,14 @@
 
 struct rte_ring;
 
-// `peek ring` is master enqueue and dequeue, the slave peek read it.
+// `peek ring` enqueued and dequeued in master,
+//  the slave peek read it, not take it.
 struct peek_ring
 {
     struct rte_ring * rx_queue;
     //pthread_mutex_t mutex;
     //sem_t  sem;
-    uint32_t cons_cur;
+    uint32_t cons_cur; // 这个写法限制了这个策略只适合 1 个peek 进程
 };
 
 // sem 显然没有 mutex 更快

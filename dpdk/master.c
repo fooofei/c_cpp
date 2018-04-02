@@ -1,16 +1,4 @@
 
-/*
-
-https://blog.csdn.net/chen98765432101/article/details/69367633
-
-环形队列 无锁队列
-# 无符号二进制数的环性
-    有符号数 原码是人类可读的书写方式 反码是历史进程中的中间产物 缺陷是有 +0 -0 两个数存在
-    补码是计算机对有符号数的表达方式 不易读
-# Compare And Set CAS  CPU 上 非lock 的同步机制
-
-*/
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
