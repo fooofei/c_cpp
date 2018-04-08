@@ -1,6 +1,4 @@
 
-// raw source code cannot support file size up 4GB.
-
 #define _GNU_SOURCE
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -8,15 +6,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdint.h>
 
 #define BUF_SIZE 1024
 
 int
 main(int argc, char *argv[])
 {
-    int  j;
-    uint64_t tot;
+    int tot, j;
     ssize_t nread;
     char buf[BUF_SIZE];
     FILE *fp;
@@ -46,7 +42,7 @@ main(int argc, char *argv[])
     tot = 0;
     while ((nread = read(STDIN_FILENO, buf, BUF_SIZE)) > 0)
         tot += nread;
-    fprintf(fp, "Total bytes in core dump: %lld\n", (long long)tot);
+    fprintf(fp, "Total bytes in core dump: %d\n", tot);
 
     exit(EXIT_SUCCESS);
 }
