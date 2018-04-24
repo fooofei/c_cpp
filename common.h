@@ -17,5 +17,18 @@
         } \
     } while (0)
 
+#ifndef max
+#define max(x,y)  (((x)>(y))?(x):(y))
+#endif
+
+#ifndef min
+#define min(x,y)    (((x)<(y))?(x):(y))
+#endif
+
+
+#ifndef _countof
+#define _countof(a) (sizeof(a)/sizeof(a[0]))
+#endif
+
 
 #endif // COMMON_H_
