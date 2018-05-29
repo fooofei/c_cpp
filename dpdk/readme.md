@@ -66,3 +66,44 @@ cons_head 就是刚开始入 ring 前保存的 local variable ，它就是个快
 然后当前的自己才去修改 cons.tail 说我也完成了 dequeue 操作，于是结束。然后它后面的 cons，才继续说完成。
 
 这是一个等待链。
+
+
+
+
+##### rte_ring_peek
+
+```
+// ref http://dpdk.org/dev/patchwork/patch/6692/
+ /**
+ * Just take a peek on the top object from a ring but not consume it.
+ * Note: This interface is MC and multi-thread not safe.
+ *       It can only be used for ring with RING_F_SC_DEQ attribute.
+ *
+ * @param r
+ *   A pointer to the ring structure.
+ * @param obj_p
+ *   A pointer to a void * pointer (object) that will be filled.
+ * @return
+ *   - 0: Success, object is peeked.
+ *   - -ENOENT: Not entries in the ring.
+ *   - - EPERM: Operation not permitted/supported
+ */
+static inline int __attribute__((always_inline))
+rte_ring_peek(const struct rte_ring *r, void **obj_p)
+{
+	uint32_t cons_head, prod_tail;
+
+	if (r->cons.sc_dequeue) {
+		cons_head = r->cons.head;
+		prod_tail = r->prod.tail;
+
+		if (prod_tail - cons_head == 0) {
+			return -ENOENT;
+		}
+		*obj_p = r->ring[cons_head & r->prod.mask];
+	} else {
+		return -EPERM;
+	}
+	return 0;
+}
+```
