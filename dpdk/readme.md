@@ -24,7 +24,7 @@ head tail 组合是为了支持多个，有多个 prod 多个 cons。
 
 cons.head == cons.tail 表示 ring 中没有消费者进来，注意不是说没进来*过*
 而是说进来了但没出去这个状态
-在多 cons 进入 ring head tail 就会不想等，当且仅当 所有 cons 都不在 ring 的时候，
+在多 cons 进入 ring head tail 就会不相等，当且仅当 所有 cons 都不在 ring 的时候，
 cons.head 又会 = cons.tail
 
 同理 prod.head prod.tail 的关系也是这样
