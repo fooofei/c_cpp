@@ -42,6 +42,10 @@ Wait 也会立刻返回，但是 linux pthread_cond_t  就不同了
 4. 注意区分 signal 与 broadcast：“broadcast 通常用于表明状态变化，signal 通常用于表示资源可用。
 （broadcast should generally be used to indicate state change rather than resource availability。）”
 
+
+[重读APUE(15)-pthread_cond_wait与while循环] http://www.linuxtcpipstack.com/1029.html
+wait 被唤醒不代表什么.
+
 */
 
 
