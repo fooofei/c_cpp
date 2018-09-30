@@ -107,3 +107,18 @@ rte_ring_peek(const struct rte_ring *r, void **obj_p)
 	return 0;
 }
 ```
+
+
+### dequeue fixed size
+```
+n = rte_ring_dequeue_burst(ring, (void**)objs, nb_max_objs);
+n可能为0，可能为 (0,nb_max_objs) 的中间值，可能为 nb_max_objs，因为使用的flags 是RTE_RING_QUEUE_VARIABLE
+```
+对比
+```
+n = rte_ring_dequeue_bulk(ring, (void**)objs, nb_max_objs);
+n可能为0，可能为 nb_max_objs，再无其他值，因为使用的flags 是RTE_RING_QUEUE_FIXED
+```
+
+
+
