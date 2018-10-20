@@ -5,6 +5,7 @@
 #include <queue>
 #include <functional>
 #include <iostream>
+#include <stdio.h>
 
 /*
 	https://www.techiedelight.com/merge-m-sorted-lists-containing-n-elements/

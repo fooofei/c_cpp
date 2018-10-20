@@ -314,3 +314,11 @@ if(WIN32)
 target_compile_options(test_cpp_same_name_virtual_function PRIVATE /source-charset:utf-8 /execution-charset:utf-8)
 endif()
 
+
+
+if(NOT WIN32)
+add_executable(test_sleep
+    ${CMAKE_CURRENT_LIST_DIR}/test_sleep.c
+)
+endif()
+

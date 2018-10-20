@@ -72,7 +72,7 @@ namespace base{ namespace process { namespace monitor {
 		if (proc_time_delta  == 0 || 0 == system_time_delta)
 			return -1;
 
-		cpu = (int)((proc_time_delta * 100 + system_time_delta / 2) / system_time_delta ); // ËÄÉáÎåÈë
+		cpu = (int)((proc_time_delta * 100 + system_time_delta / 2) / system_time_delta ); // å››èˆäº”å…¥
 
 		s_last_proc_time = proc_time;
 		s_last_system_time = system_time ;

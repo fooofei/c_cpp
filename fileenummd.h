@@ -19,18 +19,18 @@
 #include "ISearchCallback.h"
 
 
-// 2014_05_01 ¹éÄÉÈıÖÖËÑË÷·½Ê½µ½Ò»¸öÀà
-// 2014_05_03 dll·â×°
-// 2014_09_18 ĞŞ¸ÄÎª´«²Î¿ÉÒÔ²»´ø'\\'½áÎ² £¬Ôö¼Ó´«²ÎÎªÄ¿Â¼ÁĞ±íµÄ·½·¨
-// 2014_12_04 ĞŞ¸ÄÎªÃüÃû¿Õ¼äĞÎÊ½£¬È¥µôÀà£¬ÓÅ»¯´úÂë£¬¸üÃÀ¹Û£¬¶àÏß³ÌÊ¹ÓÃ_beginthreadex´´½¨£¬·½±ãÓÃ»§¹ÜÀí
-// 2014_12_05 Ôö¼Ó CSimpleString Ìæ»»std::list<std::wstring>×ö²ÎÊı
-// 2014_12_13 Ôö¼ÓÏûÏ¢ÏìÓ¦,WTLÊ¹ÓÃ¸ü·½±ã£¬¸ü°²È«
-// 2015_03_02 Ôö¼Óx64
-// 2015_05_01 Ê¹ÓÃconst wchar_t* Ê±Ôö¼Ó³¤¶È²ÎÊı·½±ã¿ìËÙ¿½±´
-// 2015_05_02 Ç§Íò¼Ç×¡²»ÒªÔÚdllÖĞ¶ÔÍâ½çµÄº¯Êı½Ó¿ÚÖĞÊ¹ÓÃSTLÈİÆ÷
-// 2015_05_23 ±àÒëÑ¡Ïî C/C++ ´úÂëÉú³É£¬ÔËĞĞ¿â¡£Release°æ±¾¸ü¸ÄÎªMT¡£È¡ÏûÔËĞĞÊ±msvcr120.dllÒÀÀµ
-// 2015_05_24 ¸ü¸ÄÎªComµ÷ÓÃ·½Ê½
-// 2015_09_08 ¸ü¸ÄÎªÍ·ÎÄ¼şµÄĞÎÊ½£¬·Ö³É¸÷¸öÄ£¿é£¬²»ÔÙÌá¹©·±ËöµÄdllÎÄ¼ş £¬ Ê¹ÓÃstd::bind¼¼Êõ
+// 2014_05_01 å½’çº³ä¸‰ç§æœç´¢æ–¹å¼åˆ°ä¸€ä¸ªç±»
+// 2014_05_03 dllå°è£…
+// 2014_09_18 ä¿®æ”¹ä¸ºä¼ å‚å¯ä»¥ä¸å¸¦'\\'ç»“å°¾ ï¼Œå¢åŠ ä¼ å‚ä¸ºç›®å½•åˆ—è¡¨çš„æ–¹æ³•
+// 2014_12_04 ä¿®æ”¹ä¸ºå‘½åç©ºé—´å½¢å¼ï¼Œå»æ‰ç±»ï¼Œä¼˜åŒ–ä»£ç ï¼Œæ›´ç¾è§‚ï¼Œå¤šçº¿ç¨‹ä½¿ç”¨_beginthreadexåˆ›å»ºï¼Œæ–¹ä¾¿ç”¨æˆ·ç®¡ç†
+// 2014_12_05 å¢åŠ  CSimpleString æ›¿æ¢std::list<std::wstring>åšå‚æ•°
+// 2014_12_13 å¢åŠ æ¶ˆæ¯å“åº”,WTLä½¿ç”¨æ›´æ–¹ä¾¿ï¼Œæ›´å®‰å…¨
+// 2015_03_02 å¢åŠ x64
+// 2015_05_01 ä½¿ç”¨const wchar_t* æ—¶å¢åŠ é•¿åº¦å‚æ•°æ–¹ä¾¿å¿«é€Ÿæ‹·è´
+// 2015_05_02 åƒä¸‡è®°ä½ä¸è¦åœ¨dllä¸­å¯¹å¤–ç•Œçš„å‡½æ•°æ¥å£ä¸­ä½¿ç”¨STLå®¹å™¨
+// 2015_05_23 ç¼–è¯‘é€‰é¡¹ C/C++ ä»£ç ç”Ÿæˆï¼Œè¿è¡Œåº“ã€‚Releaseç‰ˆæœ¬æ›´æ”¹ä¸ºMTã€‚å–æ¶ˆè¿è¡Œæ—¶msvcr120.dllä¾èµ–
+// 2015_05_24 æ›´æ”¹ä¸ºComè°ƒç”¨æ–¹å¼
+// 2015_09_08 æ›´æ”¹ä¸ºå¤´æ–‡ä»¶çš„å½¢å¼ï¼Œåˆ†æˆå„ä¸ªæ¨¡å—ï¼Œä¸å†æä¾›ç¹ççš„dllæ–‡ä»¶ ï¼Œ ä½¿ç”¨std::bindæŠ€æœ¯
 
 namespace base{ 
 
@@ -40,12 +40,12 @@ namespace path{
 	{
 
         ISearchCallback						*pinterface_;
-        unsigned int						maxThreadCount_;				// ×î´óÏß³ÌÊıÄ¿
-        volatile unsigned long				activeThreadCount_;				// »î¶¯Ïß³ÌÊıÄ¿
-        PathQueue							queue_dir_;						// Ä¿Â¼ÁĞ±í
+        unsigned int						maxThreadCount_;				// æœ€å¤§çº¿ç¨‹æ•°ç›®
+        volatile unsigned long				activeThreadCount_;				// æ´»åŠ¨çº¿ç¨‹æ•°ç›®
+        PathQueue							queue_dir_;						// ç›®å½•åˆ—è¡¨
         base::MutexLock						mutex_;		
-        base::ensure_close_handle_t			not_empty_;						// Ïòm_listDirÖĞÌí¼ÓĞÂµÄÄ¿Â¼ºóÖÃÎ»£¨ÊÜĞÅ£©
-        base::ensure_close_handle_t			event_exit_;					// ¸÷ËÑË÷Ïß³Ì½«ÒªÍË³öÊ±ÖÃÎ»£¨ÊÜĞÅ£©
+        base::ensure_close_handle_t			not_empty_;						// å‘m_listDirä¸­æ·»åŠ æ–°çš„ç›®å½•åç½®ä½ï¼ˆå—ä¿¡ï¼‰
+        base::ensure_close_handle_t			event_exit_;					// å„æœç´¢çº¿ç¨‹å°†è¦é€€å‡ºæ—¶ç½®ä½ï¼ˆå—ä¿¡ï¼‰
         base::ensure_close_handle_t			th_manage_;
         base::ptr_threaddata_t				thread_data_;
         base::ptr_threaddata_t				thread_manage_data_;
@@ -141,20 +141,20 @@ namespace path{
 				bRet = QueueUserWorkItem(base::funcInThread<unsigned long>,thread_data_.get(),WT_EXECUTELONGFUNCTION);
 			}
 			if( bRet )
-				WaitForSingleObject(event_exit_,INFINITE); // µÈ´ıËùÓĞËÑË÷Ïß³Ì½áÊø
+				WaitForSingleObject(event_exit_,INFINITE); // ç­‰å¾…æ‰€æœ‰æœç´¢çº¿ç¨‹ç»“æŸ
 
-			pinterface_->search_stop();// Í¨ÖªUI ½áÊø
+			pinterface_->search_stop();// é€šçŸ¥UI ç»“æŸ
 		}
 
 	private:
 	//
-	// ¾«Ëè 
-	//  1. Á½¸ö event £¬ event_not_empty ,event_exit_ , 1¸ö active_thread_count
-	//  2. ÌíÈëĞÂµÄÈÎÎñ¾Í SetEvent(event_not_empty);
-	//  3. ÎŞÈÎÎñ£¬µ«ÊÇÓĞ active thread (active_thread_count > 0), ÄÇÃ´¾ÍÔÚ  WaitForSingleObject(event_not_empty,INFINITE)
-	//  4. ÎŞÈÎÎñ£¬¶øÇÒ  active_thread_count ==0 £¬ ÄÇÃ´¾ÍÍË³ö¹¤×÷£¬²¢ÇÒ SetEvent(event_not_empty); WaitForSingleObject(event_not_empty,0) != WAIT_TIMEOUT
-	//  			Õâ¶Î´úÂë£¬ÏÈÖÃÊÜĞÅ£¬È»ºóµÈ´ı£¬Èç¹ûÃ»ÓĞÄÃ×ßÕâ¸öÖÃĞÅµÄ×´Ì¬£¬Ò²¾ÍÊÇÃ»ÓĞÆäËûÏß³ÌÔÚ event_not_empty ÉÏ wait£¬ ËµÃ÷ÕâÊÇ×îºóÒ»¸öÏß³Ì£¬ºóÃæµÄ´úÂë»áÁ¢¿Ì·µ»Ø£¬
-	//			  Òò´Ë¾ÍĞèÒª SetEvent(event_exit_) , ÔËĞĞ½áÊø
+	// ç²¾é«“ 
+	//  1. ä¸¤ä¸ª event ï¼Œ event_not_empty ,event_exit_ , 1ä¸ª active_thread_count
+	//  2. æ·»å…¥æ–°çš„ä»»åŠ¡å°± SetEvent(event_not_empty);
+	//  3. æ— ä»»åŠ¡ï¼Œä½†æ˜¯æœ‰ active thread (active_thread_count > 0), é‚£ä¹ˆå°±åœ¨  WaitForSingleObject(event_not_empty,INFINITE)
+	//  4. æ— ä»»åŠ¡ï¼Œè€Œä¸”  active_thread_count ==0 ï¼Œ é‚£ä¹ˆå°±é€€å‡ºå·¥ä½œï¼Œå¹¶ä¸” SetEvent(event_not_empty); WaitForSingleObject(event_not_empty,0) != WAIT_TIMEOUT
+	//  			è¿™æ®µä»£ç ï¼Œå…ˆç½®å—ä¿¡ï¼Œç„¶åç­‰å¾…ï¼Œå¦‚æœæ²¡æœ‰æ‹¿èµ°è¿™ä¸ªç½®ä¿¡çš„çŠ¶æ€ï¼Œä¹Ÿå°±æ˜¯æ²¡æœ‰å…¶ä»–çº¿ç¨‹åœ¨ event_not_empty ä¸Š waitï¼Œ è¯´æ˜è¿™æ˜¯æœ€åä¸€ä¸ªçº¿ç¨‹ï¼Œåé¢çš„ä»£ç ä¼šç«‹åˆ»è¿”å›ï¼Œ
+	//			  å› æ­¤å°±éœ€è¦ SetEvent(event_exit_) , è¿è¡Œç»“æŸ
 	//  
 	//
 		void search_in_work_thread()
@@ -169,7 +169,7 @@ namespace path{
 			{
 
 				{
-					// È¡ĞÂµÄÄ¿Â¼
+					// å–æ–°çš„ç›®å½•
 					base::MutexLockGuard lock(&mutex_);
 					if (queue_dir_.empty())
 					{
@@ -182,13 +182,13 @@ namespace path{
 					}
 				}
 
-				if (!bActive) // µ±Ç°²»ÔËĞĞ
+				if (!bActive) // å½“å‰ä¸è¿è¡Œ
 				{
 					if (InterlockedDecrement(&activeThreadCount_) == 0)
 					{
 						break;
 					}
-					ResetEvent(not_empty_); // µÈ´ı±ğµÄÏß³ÌÌí¼Ó
+					ResetEvent(not_empty_); // ç­‰å¾…åˆ«çš„çº¿ç¨‹æ·»åŠ 
 					WaitForSingleObject(not_empty_,INFINITE);
 					InterlockedIncrement(&activeThreadCount_);
 					bActive = TRUE;
@@ -206,7 +206,7 @@ namespace path{
 					if ( fiter.curIsDir())
 					{
 						{
-							// Ïò¶ÓÁĞÌí¼ÓÎÄ¼ş
+							// å‘é˜Ÿåˆ—æ·»åŠ æ–‡ä»¶
 							base::MutexLockGuard lock(&mutex_);
 							base::ptr_pathbuffer_t p(new(std::nothrow)base::pathbuffer());
 							if( NULL == p ) continue;
