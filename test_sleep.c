@@ -76,7 +76,7 @@ static inline void delay_us(unsigned us){
     struct timespec res={0};
     res.tv_sec=0;
     res.tv_nsec = us; res.tv_nsec *= 1000;
-    if(res.tv_nsec/1000*1000*1000){
+    if(res.tv_nsec/(1000*1000*1000)){
         res.tv_sec += res.tv_nsec/(1000*1000*1000);
         res.tv_nsec = res.tv_nsec%(1000*1000*1000);
     }
