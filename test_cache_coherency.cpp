@@ -17,16 +17,11 @@
 #include <chrono>
 #include <ctime>
 
-
-
-
-static uint32_t 
-thread_func(void *arg)
+static uint32_t thread_func(void* arg)
 {
-    int * p = (int *)arg;
+    int* p = (int*)arg;
     int i;
-    for (i=0;i<1000000; i+=1)
-    {
+    for (i = 0; i < 1000000; i += 1) {
         *p += 1;
     }
     return 0;
@@ -35,7 +30,6 @@ thread_func(void *arg)
 int counter1[16];
 int counter2[16];
 int counter3[16];
-
 
 void test_in_same_array()
 {
@@ -51,30 +45,24 @@ void test_in_same_array()
     th2 = std::thread(thread_func, &counter1[1]);
     th3 = std::thread(thread_func, &counter1[2]);
 
-    
-    if (th1.joinable())
-    {
+    if (th1.joinable()) {
         th1.join();
     }
-    if (th2.joinable())
-    {
+    if (th2.joinable()) {
         th2.join();
     }
-    if (th3.joinable())
-    {
+    if (th3.joinable()) {
         th3.join();
     }
 
     end = std::chrono::steady_clock::now();
 
-    double v = std::chrono::duration<double, std::milli>(end-start).count();
+    double v = std::chrono::duration<double, std::milli>(end - start).count();
 
     printf("%s() timeit %.3f %s:%d\n", __FUNCTION__, v, __FILE__, __LINE__);
-
 }
 
-void 
-test_in_multi_array()
+void test_in_multi_array()
 {
     std::thread th1;
     std::thread th2;
@@ -88,17 +76,13 @@ test_in_multi_array()
     th2 = std::thread(thread_func, &counter2[0]);
     th3 = std::thread(thread_func, &counter3[0]);
 
-
-    if (th1.joinable())
-    {
+    if (th1.joinable()) {
         th1.join();
     }
-    if (th2.joinable())
-    {
+    if (th2.joinable()) {
         th2.join();
     }
-    if (th3.joinable())
-    {
+    if (th3.joinable()) {
         th3.join();
     }
 
