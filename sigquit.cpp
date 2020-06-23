@@ -3,7 +3,7 @@
 #include <signal.h>
 #include <sys/eventfd.h>
 #include <unistd.h>
-
+#include <string.h>
 
 static int g_quitFd = -1;
 static bool g_isQuit = false;
@@ -24,7 +24,7 @@ void RegisterQuit()
 {
     g_quitFd = eventfd(0, EFD_NONBLOCK);
     struct sigaction act;
-    memset_s(&act, sizeof(act), 0, sizeof(act));
+    memset(&act, 0, sizeof(act));
     signal(SIGINT, signalHandler);
     signal(SIGTERM, signalHandler);
     signal(SIGPIPE, SIG_IGN);
