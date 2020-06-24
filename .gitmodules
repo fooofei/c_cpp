@@ -1,0 +1,3 @@
+[submodule "lib/curl_async/tests/curl"]
+	path = lib/curl_async/tests/curl
+	url = https://github.com/curl/curl
