@@ -1,0 +1,81 @@
+cmake_minimum_required(VERSION 3.1)
+project(C_MAKE_DEMO)
+
+if(APPLE)
+    # https://stackoverflow.com/questions/31561309/cmake-warnings-under-os-x-macosx-rpath-is-not-specified-for-the-following-targe
+    set(CMAKE_MACOSX_RPATH 0)
+endif()
+
+set(common_c_common ${CMAKE_CURRENT_LIST_DIR}/../..)
+set(common_source_files 
+	${CMAKE_CURRENT_LIST_DIR}/curl_common.c
+	${CMAKE_CURRENT_LIST_DIR}/curl_common.h
+
+	${common_c_common}/datetime.h
+	${common_c_common}/datetime.c
+)
+
+
+
+
+
+
+link_directories(${CMAKE_CURRENT_LIST_DIR}/curl_gen/lib)
+
+set(self_simple_curl curl_simple)
+add_executable(${self_simple_curl} 
+	${CMAKE_CURRENT_LIST_DIR}/simple_curl.c
+	${common_source_files}
+)
+target_include_directories(${self_simple_curl} PRIVATE ${common_c_common})
+target_link_libraries(${self_simple_curl} curl) 
+# 无奈必须加这一句 目录包含的测试请看 libcurl_static.cmake
+target_include_directories(${self_simple_curl} PRIVATE "${CMAKE_CURRENT_LIST_DIR}/curl_gen/include")
+
+if (WIN32)
+  # visual studio file encoding
+  target_compile_options(${self_simple_curl} PRIVATE /source-charset:utf-8 /execution-charset:utf-8)
+  target_compile_options(${self_simple_curl} PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/MP>)
+#elseif(APPLE)
+else()
+  # fPIC for other library link
+  target_compile_options(${self_simple_curl} PRIVATE -fPIC)
+  target_compile_options(${self_simple_curl} PRIVATE -fvisibility=hidden)
+  target_compile_options(${self_simple_curl} PRIVATE -fno-common)
+endif()
+
+
+
+
+
+
+
+
+
+
+
+
+set(self_simple_async curl_async_test)
+add_executable(${self_simple_async} 
+	${CMAKE_CURRENT_LIST_DIR}/async_curl.c
+	${CMAKE_CURRENT_LIST_DIR}/../curl_async.h
+	${CMAKE_CURRENT_LIST_DIR}/../curl_async.c
+	${common_source_files}
+)
+target_include_directories(${self_simple_async} PRIVATE ${common_c_common})
+target_link_libraries(${self_simple_async} curl) 
+target_include_directories(${self_simple_async} PRIVATE "${CMAKE_CURRENT_LIST_DIR}/curl_gen/include")
+
+if (WIN32)
+  # visual studio file encoding
+  target_compile_options(${self_simple_async} PRIVATE /source-charset:utf-8 /execution-charset:utf-8)
+  target_compile_options(${self_simple_async} PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/MP>)
+#elseif(APPLE)
+else()
+  # fPIC for other library link
+  target_compile_options(${self_simple_async} PRIVATE -fPIC)
+  target_compile_options(${self_simple_async} PRIVATE -fvisibility=hidden)
+  target_compile_options(${self_simple_async} PRIVATE -fno-common)
+endif()
+
+
