@@ -1,0 +1,17 @@
+language: cpp
+
+addons:
+  apt:
+    sources:
+      - george-edison55-precise-backports
+    packages:
+      - cmake-data
+      - cmake
+notifications:
+  webhooks:
+    urls:
+
+
+# command to run tests
+script: 
+  - sh lib/whereami/run.sh
