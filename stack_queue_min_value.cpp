@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <iostream>
 #include <vector>
@@ -23,206 +22,195 @@ but if in stack, it can do on O(1) because if remove an element, we can use the 
 min value and not to calculate again
 */
 
-struct stack_t
-{
-  //std::deque<uint32_t> data_;
-  // the deque is a list of vector container
+struct stack_t {
+    // std::deque<uint32_t> data_;
+    // the deque is a list of vector container
 
-  std::vector<uint32_t> data_;
-  std::stack<uint32_t> min_index_;
+    std::vector<uint32_t> data_;
+    std::stack<uint32_t> min_index_;
 
 
-  void clear()
-  {
-    data_.clear();
-    for (; !min_index_.empty();)
+    void clear()
     {
-      min_index_.pop();
+        data_.clear();
+        for (; !min_index_.empty();) {
+            min_index_.pop();
+        }
     }
-  }
 
-  bool empty()
-  {
-    return data_.empty();
-  }
-
-  void push(uint32_t v)
-  {
-    if (min_index_.empty())
+    bool empty()
     {
-      min_index_.push(0);
+        return data_.empty();
     }
-    else
+
+    void push(uint32_t v)
     {
-      uint32_t t;
-      get_min(&t);
-      if (v < t) {
-        min_index_.push(data_.size());
-      }
+        if (min_index_.empty()) {
+            min_index_.push(0);
+        } else {
+            uint32_t t;
+            get_min(&t);
+            if (v < t) {
+                min_index_.push(data_.size());
+            }
+        }
+
+        data_.push_back(v);
     }
 
-    data_.push_back(v);
-  }
-
-  uint32_t top()
-  {
-    return data_.back();
-  }
-
-  void  pop()
-  {
-    data_.pop_back();
-    if (data_.size() == min_index_.top()) {
-      min_index_.pop();
+    uint32_t top()
+    {
+        return data_.back();
     }
-  }
 
-
-  /* get the min value of the stack */
-  int get_min(uint32_t * v)
-  {
-    if (data_.empty()) {
-      return -1;
+    void pop()
+    {
+        data_.pop_back();
+        if (data_.size() == min_index_.top()) {
+            min_index_.pop();
+        }
     }
-    uint32_t t = min_index_.top();
-    *v = data_[t];
-    return 0;
-  }
 
+
+    /* get the min value of the stack */
+    int get_min(uint32_t *v)
+    {
+        if (data_.empty()) {
+            return -1;
+        }
+        uint32_t t = min_index_.top();
+        *v = data_[t];
+        return 0;
+    }
 };
 
 
 int test_stack_min1()
 {
-  stack_t v;
-  uint32_t t;
+    stack_t v;
+    uint32_t t;
 
-  v.clear();
+    v.clear();
 
-  v.push(3);
-  v.get_min(&t);
-  assert(t == 3);
+    v.push(3);
+    v.get_min(&t);
+    assert(t == 3);
 
-  v.push(5);
-  v.get_min(&t);
-  assert(t == 3);
-  v.push(1);
-  v.get_min(&t);
-  assert(t == 1);
-  v.push(2);
-  v.get_min(&t);
-  assert(t == 1);
+    v.push(5);
+    v.get_min(&t);
+    assert(t == 3);
+    v.push(1);
+    v.get_min(&t);
+    assert(t == 1);
+    v.push(2);
+    v.get_min(&t);
+    assert(t == 1);
 
 
-  v.pop();
-  v.get_min(&t);
-  assert(t == 1);
-  v.pop();
-  v.get_min(&t);
-  assert(t == 3);
+    v.pop();
+    v.get_min(&t);
+    assert(t == 1);
+    v.pop();
+    v.get_min(&t);
+    assert(t == 3);
 
-  v.pop();
-  v.get_min(&t);
-  assert(t == 3);
+    v.pop();
+    v.get_min(&t);
+    assert(t == 3);
 
-  v.pop();
-  v.get_min(&t);
+    v.pop();
+    v.get_min(&t);
 
-  return 0;
+    return 0;
 }
 
 /* if the container is a queue, we only can do O(n) to get_min() */
-struct queue_t
-{
-  std::vector<uint32_t> data_;
-  std::queue<uint32_t> min_index_;
+struct queue_t {
+    std::vector<uint32_t> data_;
+    std::queue<uint32_t> min_index_;
 
 
-  void clear()
-  {
-    data_.clear();
-    for (; !min_index_.empty();)
+    void clear()
     {
-      min_index_.pop();
+        data_.clear();
+        for (; !min_index_.empty();) {
+            min_index_.pop();
+        }
     }
-  }
 
-  void push(uint32_t v)
-  {
-    data_.push_back(v);
-  }
-
-  uint32_t front()
-  {
-    return data_.front();
-  }
-
-  void pop()
-  {
-    data_.erase(data_.begin(), data_.begin() + 1);
-  }
-
-
-  /* get the min value of the queue */
-  int get_min(uint32_t * out)
-  {
-    std::vector<uint32_t>::const_iterator it = std::min_element(data_.begin(), data_.end());
-    if (it != data_.end()) {
-      *out = *it;
-      return 0;
+    void push(uint32_t v)
+    {
+        data_.push_back(v);
     }
-    return -1;
-  }
+
+    uint32_t front()
+    {
+        return data_.front();
+    }
+
+    void pop()
+    {
+        data_.erase(data_.begin(), data_.begin() + 1);
+    }
 
 
+    /* get the min value of the queue */
+    int get_min(uint32_t *out)
+    {
+        std::vector<uint32_t>::const_iterator it = std::min_element(data_.begin(), data_.end());
+        if (it != data_.end()) {
+            *out = *it;
+            return 0;
+        }
+        return -1;
+    }
 };
 
 int test_queue_min1()
 {
-  queue_t v;
-  uint32_t t;
+    queue_t v;
+    uint32_t t;
 
-  v.clear();
+    v.clear();
 
-  v.push(3);
-  v.get_min(&t);
-  assert(t == 3);
+    v.push(3);
+    v.get_min(&t);
+    assert(t == 3);
 
-  v.push(5);
-  v.get_min(&t);
-  assert(t == 3);
-  v.push(1);
-  v.get_min(&t);
-  assert(t == 1);
-  v.push(2);
-  v.get_min(&t);
-  assert(t == 1);
+    v.push(5);
+    v.get_min(&t);
+    assert(t == 3);
+    v.push(1);
+    v.get_min(&t);
+    assert(t == 1);
+    v.push(2);
+    v.get_min(&t);
+    assert(t == 1);
 
 
-  v.pop();
-  v.get_min(&t);
-  assert(t == 1);
-  v.pop();
-  v.get_min(&t);
-  assert(t == 1);
+    v.pop();
+    v.get_min(&t);
+    assert(t == 1);
+    v.pop();
+    v.get_min(&t);
+    assert(t == 1);
 
-  v.pop();
-  v.get_min(&t);
-  assert(t == 2);
+    v.pop();
+    v.get_min(&t);
+    assert(t == 2);
 
-  v.pop();
-  v.get_min(&t);
+    v.pop();
+    v.get_min(&t);
 
-  return 0;
+    return 0;
 }
 
 
-int main(int argc, const char * argv[])
+int main(int argc, const char *argv[])
 {
+    /* compile on MSVC debug, if no assert, then all pass */
+    test_stack_min1();
+    test_queue_min1();
 
-  /* compile on MSVC debug, if no assert, then all pass */
-  test_stack_min1();
-  test_queue_min1();
-
-  return 0;
+    return 0;
 }
