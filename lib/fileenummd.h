@@ -1,4 +1,3 @@
-
 /* This file is only for backup
   A multi-thread way to search a file.
   From wangyanping's book.
@@ -31,18 +30,15 @@
 // 2015_09_08 更改为头文件的形式，分成各个模块，不再提供繁琐的dll文件 ， 使用std::bind技术
 
 namespace base {
-
 namespace path {
-
 class FileEnumMd {
-
-    ISearchCallback* pinterface_;
-    unsigned int maxThreadCount_;               // 最大线程数目
-    volatile unsigned long activeThreadCount_;  // 活动线程数目
-    PathQueue queue_dir_;                       // 目录列表
+    ISearchCallback *pinterface_;
+    unsigned int maxThreadCount_; // 最大线程数目
+    volatile unsigned long activeThreadCount_; // 活动线程数目
+    PathQueue queue_dir_; // 目录列表
     base::MutexLock mutex_;
-    base::ensure_close_handle_t not_empty_;   // 向m_listDir中添加新的目录后置位（受信）
-    base::ensure_close_handle_t event_exit_;  // 各搜索线程将要退出时置位（受信）
+    base::ensure_close_handle_t not_empty_; // 向m_listDir中添加新的目录后置位（受信）
+    base::ensure_close_handle_t event_exit_; // 各搜索线程将要退出时置位（受信）
     base::ensure_close_handle_t th_manage_;
     base::ptr_threaddata_t thread_data_;
     base::ptr_threaddata_t thread_manage_data_;
@@ -60,11 +56,11 @@ public:
         stop();
     }
 
-    void pushdir(ptr_pathbuffer_t& p)
+    void pushdir(ptr_pathbuffer_t &p)
     {
         queue_dir_.push(p);
     }
-    BOOL pushdir(const wchar_t* p, size_t l)
+    BOOL pushdir(const wchar_t *p, size_t l)
     {
         ptr_pathbuffer_t tp(new (std::nothrow) base::pathbuffer());
         if (NULL == tp)
@@ -76,7 +72,7 @@ public:
         return FALSE;
     }
 
-    BOOL begin(ISearchCallback* pi, UINT nMaxThread, PHANDLE phThread = NULL, UINT* threadId = NULL)
+    BOOL begin(ISearchCallback *pi, UINT nMaxThread, PHANDLE phThread = NULL, UINT *threadId = NULL)
     {
         pinterface_ = pi;
         maxThreadCount_ = nMaxThread;
@@ -134,9 +130,9 @@ private:
             bRet = QueueUserWorkItem(base::funcInThread<unsigned long>, thread_data_.get(), WT_EXECUTELONGFUNCTION);
         }
         if (bRet)
-            WaitForSingleObject(event_exit_, INFINITE);  // 等待所有搜索线程结束
+            WaitForSingleObject(event_exit_, INFINITE); // 等待所有搜索线程结束
 
-        pinterface_->search_stop();  // 通知UI 结束
+        pinterface_->search_stop(); // 通知UI 结束
     }
 
 private:
@@ -150,7 +146,7 @@ private:
     //  WaitForSingleObject(event_not_empty,0) != WAIT_TIMEOUT
     //  			这段代码，先置受信，然后等待，如果没有拿走这个置信的状态，也就是没有其他线程在 event_not_empty 上
     //  wait， 说明这是最后一个线程，后面的代码会立刻返回，
-    //			  因此就需要 SetEvent(event_exit_) , 运行结束
+    // 			  因此就需要 SetEvent(event_exit_) , 运行结束
     //
     //
     void search_in_work_thread()
@@ -162,7 +158,6 @@ private:
         path::FileIterator fiter;
 
         while (TRUE) {
-
             {
                 // 取新的目录
                 base::MutexLockGuard lock(&mutex_);
@@ -174,12 +169,11 @@ private:
                 }
             }
 
-            if (!bActive)  // 当前不运行
-            {
+            if (!bActive) { // 当前不运行
                 if (InterlockedDecrement(&activeThreadCount_) == 0) {
                     break;
                 }
-                ResetEvent(not_empty_);  // 等待别的线程添加
+                ResetEvent(not_empty_); // 等待别的线程添加
                 WaitForSingleObject(not_empty_, INFINITE);
                 InterlockedIncrement(&activeThreadCount_);
                 bActive = TRUE;
@@ -190,10 +184,8 @@ private:
                 continue;
 
             while (fiter.next()) {
-                if (!filepath.make_path(fiter.currentdir()->c_str(),
-                        fiter.currentdir()->size(),
-                        fiter.currentname(),
-                        fiter.currentnamelen())) {
+                if (!filepath.make_path(fiter.currentdir()->c_str(), fiter.currentdir()->size(), fiter.currentname(),
+                    fiter.currentnamelen())) {
                     continue;
                 }
                 if (fiter.curIsDir()) {
@@ -220,15 +212,14 @@ private:
             SetEvent(event_exit_);
         }
     }
-    void enumFile(const wchar_t* filename, size_t namelen, const wchar_t* filepath, size_t pathlen)
+    void enumFile(const wchar_t *filename, size_t namelen, const wchar_t *filepath, size_t pathlen)
     {
         if (pinterface_ != NULL) {
             pinterface_->search_enum_fileW(filename, namelen, filepath, pathlen);
         }
     }
 };
+}; // namespace path
+}; // namespace base
 
-};  // namespace path
-};  // namespace base
-
-#endif  // FILE_ENUM_MD_H_
+#endif // FILE_ENUM_MD_H_
