@@ -42,7 +42,7 @@ void _test_search_lower_bound()
     uint32_t array_search[] = {
         1, 0
         , 
-        6, (uint32_t)(_array_end(array) - 1 - array - 1)
+        6, (uint32_t)(ARRAY_END(array) - 1 - array - 1)
         , 
         3, 2
         , 
@@ -50,7 +50,7 @@ void _test_search_lower_bound()
         , 
         4, 5
         , 
-        9, (uint32_t)(_array_end(array) - array - 1)
+        9, (uint32_t)(ARRAY_END(array) - array - 1)
     };
 
     _test_search_framework(array, _array_size(array), _array_begin_end(array_search), lower_bound);
@@ -64,7 +64,7 @@ void _test_search_upper_bound()
     uint32_t array_search[] = {
         1, 1
         , 
-        6, (uint32_t)(_array_end(array) - 1 - array)
+        6, (uint32_t)(ARRAY_END(array) - 1 - array)
         , 
         3, 5
         , 
@@ -72,7 +72,7 @@ void _test_search_upper_bound()
         , 
         4, 5
         , 
-        9, (uint32_t)(_array_end(array) - array - 1)
+        9, (uint32_t)(ARRAY_END(array) - array - 1)
     };
 
 
