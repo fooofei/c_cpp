@@ -1,35 +1,34 @@
 
+// 演示一种非递归手法释放二叉树结点内存的办法
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
-struct node
-{
+struct node {
     int data;
-    struct node * left;
-    struct node * right;
+    struct node *left;
+    struct node *right;
 };
 
-struct context
-{
+struct context {
     int memory_used;
 };
 
-struct node * node_alloc(struct context * ctx)
+struct node *node_alloc(struct context *ctx)
 {
     ctx->memory_used += 1;
     return (struct node *)malloc(sizeof(struct node));
 }
 
-void node_free(struct context * ctx, struct node * p)
+void node_free(struct context *ctx, struct node *p)
 {
     ctx->memory_used -= 1;
     free(p);
 }
 
-int add_node(struct context * ctx, struct node * root, int data1, int data2)
+int add_node(struct context *ctx, struct node *root, int data1, int data2)
 {
-
     root->left = node_alloc(ctx);
     root->left->data = data1;
     root->left->left = NULL;
@@ -45,33 +44,34 @@ int add_node(struct context * ctx, struct node * root, int data1, int data2)
 }
 
 
-void free_tree(struct context * ctx, struct node * t)
+void free_tree(struct context *ctx, struct node *t)
 {
-    struct node * bl;
-    for (bl = t; bl != NULL && bl->left != NULL; bl = bl->left);
+    // 总是把右子树放到最左边，在释放每一个根结点的同时，不断形成单链表
+    struct node *bl;
+    for (bl = t; bl != NULL && bl->left != NULL; bl = bl->left) {
+    }
 
-    for (; t != NULL;)
-    {
-        for (bl->left = t->right; bl != NULL && bl->left != NULL; bl = bl->left);
+    for (; t != NULL;) {
+        for (bl->left = t->right; bl != NULL && bl->left != NULL; bl = bl->left) {
+        }
 
-        struct node * old = t;
+        struct node *old = t;
         t = t->left;
         printf("%d ", old->data);
         node_free(ctx, old);
     }
 }
 
-int main(int argc, const char ** argv)
+int main(int argc, const char **argv)
 {
-
-    struct node * root;
+    struct node *root;
     struct context ctx;
     memset(&ctx, 0, sizeof(ctx));
 
     root = node_alloc(&ctx);
     root->data = 1;
 
-    add_node(&ctx,root, 2, 3);
+    add_node(&ctx, root, 2, 3);
     add_node(&ctx, root->left, 4, 5);
     add_node(&ctx, root->right, 6, 7);
 
@@ -81,11 +81,10 @@ int main(int argc, const char ** argv)
     //     /   \  /  \
     //    4     5 6   7
 
-    // free 1 2 4 3 6 5 7
+    // free sequence 1 2 4 3 6 5 7
     free_tree(&ctx, root);
 
-    if (ctx.memory_used != 0)
-    {
+    if (ctx.memory_used != 0) {
         fprintf(stderr, "Memory leak node count = %d\n", ctx.memory_used);
         fflush(stderr);
     }
