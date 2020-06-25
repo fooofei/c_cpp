@@ -1,4 +1,3 @@
-
 /*
   这个文件用来测试缓存一致性
 
@@ -17,9 +16,9 @@
 #include <chrono>
 #include <ctime>
 
-static uint32_t thread_func(void* arg)
+static uint32_t thread_func(void *arg)
 {
-    int* p = (int*)arg;
+    int *p = (int *)arg;
     int i;
     for (i = 0; i < 1000000; i += 1) {
         *p += 1;
