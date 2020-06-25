@@ -1,4 +1,3 @@
-
 /*
  1 两个线程
  2 线程1 是数据更新线程 线程2 是数据读取线程
@@ -15,8 +14,7 @@
 #include <string.h> // memset
 #include <time.h>
 
-struct arg
-{
+struct arg {
     uint8_t state;
     uint32_t number;
     uint32_t count;
@@ -32,72 +30,67 @@ void nsleep(long sec, long nsec)
 }
 
 
-void * thread_update(void * p)
+void *thread_update(void *p)
 {
-    struct arg * a = p;
-    while (!a->exit)
-    {
+    struct arg *a = p;
+    while (!a->exit) {
         nsleep(1, 0);
 
-        if (a->state > 0)
-        {
-            fprintf(stdout, "[y]in while %lld\n",(long long)time(NULL)); fflush(stdout);
-            while (!__sync_bool_compare_and_swap(&(a->state), 1, 0));
-            fprintf(stdout, "[y]out while %lld\n", (long long)time(NULL)); fflush(stdout);
+        if (a->state > 0) {
+            fprintf(stdout, "[y]in while %lld\n", (long long)time(NULL));
+            fflush(stdout);
+            while (!__sync_bool_compare_and_swap(&(a->state), 1, 0))
+                ;
+            fprintf(stdout, "[y]out while %lld\n", (long long)time(NULL));
+            fflush(stdout);
         }
         nsleep(0, 1000);
-        //fprintf(stdout, "[y]last number %u count %u\n", a->number, a->count); fflush(stdout);
+        // fprintf(stdout, "[y]last number %u count %u\n", a->number, a->count); fflush(stdout);
         a->number += 1;
-        a->number = a->number  % 6;
+        a->number = a->number % 6;
         a->count = 0;
 
         __sync_add_and_fetch(&a->state, 1);
 
-        fprintf(stdout, "[y] out work\n"); fflush(stdout);
-
+        fprintf(stdout, "[y] out work\n");
+        fflush(stdout);
     }
-   
 }
 
-static void _update(struct arg * a, uint32_t number)
+static void _update(struct arg *a, uint32_t number)
 {
-    if (a->number == number)
-    {
+    if (a->number == number) {
         a->count += 1;
     }
 }
 
-static void * thread_count(void * p)
+static void *thread_count(void *p)
 {
     uint32_t i;
     uint32_t j;
-    struct arg * a = p;
+    struct arg *a = p;
 
-    for (i = 0; i < 3; i++)
-    {
-        for (j = 1; j <= 5; j+=1)
-        {
-            fprintf(stdout, "                      [x]i %u j %u  a->state=%u\n", i, j, a->state ); fflush(stdout);
-            if (a->state == 1)
-            {
+    for (i = 0; i < 3; i++) {
+        for (j = 1; j <= 5; j += 1) {
+            fprintf(stdout, "                      [x]i %u j %u  a->state=%u\n", i, j, a->state);
+            fflush(stdout);
+            if (a->state == 1) {
                 __sync_add_and_fetch(&a->state, 1);
-                fprintf(stdout, "                      [x]i %u j %u in work\n", i, j); fflush(stdout);
+                fprintf(stdout, "                      [x]i %u j %u in work\n", i, j);
+                fflush(stdout);
                 nsleep(1, 100);
                 _update(a, j);
-                fprintf(stdout, "                      [x]i %u j %u  out work\n", i, j); fflush(stdout);
+                fprintf(stdout, "                      [x]i %u j %u  out work\n", i, j);
+                fflush(stdout);
                 __sync_sub_and_fetch(&a->state, 1);
-            }
-            else
-            {
+            } else {
                 nsleep(1, 0);
             }
-            
         }
     }
 
     a->exit = 1;
 }
-
 
 
 int main()
@@ -109,9 +102,7 @@ int main()
     pthread_create(&thr, NULL, thread_count, &a);
     pthread_create(&thr, NULL, thread_update, &a);
 
-    while (!a.exit)
-    {
-
+    while (!a.exit) {
     }
 
     nsleep(1, 0);
@@ -176,7 +167,7 @@ $ ./atomic
 
 
 
-下一个案例 
+下一个案例
 
 $ ./atomic
                       [x]i 0 j 1  a->state=0
