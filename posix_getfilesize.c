@@ -1,4 +1,3 @@
-
 /*
 Windows 平台获取文件大小使用 GetFileSizeEx
 
@@ -19,22 +18,21 @@ posix 平台
 #include <sys/stat.h>
 
 
-int get_filesize_bad(const char * fullpath, uint64_t * outsize)
+int get_filesize_bad(const char *fullpath, uint64_t *outsize)
 {
     struct stat buf;
     int rc;
 
     memset(&buf, 0, sizeof(buf));
     // fd = open(fullpath,"rb");
-    //rc = fstat(fd, &buf);
+    // rc = fstat(fd, &buf);
     // https://stackoverflow.com/questions/23169241/what-are-the-advantages-of-using-fstat-vs-stat
     // fstat stat 的区别在于使用的参数
     // fstat 因为要提前获得文件句柄，占有文件时间更长，所以安全性会更好
-   
-    
+
+
     rc = stat(fullpath, &buf);
-    if (rc != 0)
-    {
+    if (rc != 0) {
         return -1;
     }
     // st_size type = long
@@ -43,7 +41,7 @@ int get_filesize_bad(const char * fullpath, uint64_t * outsize)
     return 0;
 }
 
-int get_filesize_fix(const char * fullpath, uint64_t * outsize)
+int get_filesize_fix(const char *fullpath, uint64_t *outsize)
 {
     struct stat buf;
     int rc;
@@ -51,8 +49,7 @@ int get_filesize_fix(const char * fullpath, uint64_t * outsize)
     memset(&buf, 0, sizeof(buf));
 
     rc = stat(fullpath, &buf);
-    if (rc != 0)
-    {
+    if (rc != 0) {
         return -1;
     }
     // st_size type = long
@@ -61,7 +58,6 @@ int get_filesize_fix(const char * fullpath, uint64_t * outsize)
     *outsize += buf.st_size;
     return 0;
 }
-
 
 
 int main()

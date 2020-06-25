@@ -1,25 +1,22 @@
-
 #include <sstream>
 #include <stdio.h>
-int main() 
+int main()
 {
-  std::ostringstream oss;
+    std::ostringstream oss;
 
-  oss << "123"
-      << " " 
-      << 4 
-      << 5;
+    oss << "123"
+        << " " << 4 << 5;
 
-  printf("%s\n", oss.str().c_str());
-  
-  // reset the stream
-  oss.str(std::string());
-  oss.clear();
+    printf("%s\n", oss.str().c_str());
 
-  oss<<1.345f;
+    // reset the stream
+    oss.str(std::string());
+    oss.clear();
 
-  printf("%s\n", oss.str().c_str());
+    oss << 1.345f;
 
-  printf("hello\n");
-  return 0;
+    printf("%s\n", oss.str().c_str());
+
+    printf("hello\n");
+    return 0;
 }
