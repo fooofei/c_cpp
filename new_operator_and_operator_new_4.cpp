@@ -1,12 +1,10 @@
-
 #include <cstdio>
 #include <string>
 #include <string.h>
 #include <stdlib.h>
 
 
-struct node_t
-{
+struct node_t {
     node_t()
     {
         printf("node ctor\n");
@@ -18,39 +16,38 @@ struct node_t
     }
 };
 
-struct function_identifier_t
-{
-    const char * idf;
-    function_identifier_t(const char * arg):idf(arg)
+struct function_identifier_t {
+    const char *idf;
+    function_identifier_t(const char *arg) : idf(arg)
     {
-        printf("in %s\n",idf);
+        printf("in %s\n", idf);
     }
     ~function_identifier_t()
     {
-        printf("out %s\n",idf);
+        printf("out %s\n", idf);
     }
 };
 
-void * operator new (size_t size, const char * , long )
+void *operator new(size_t size, const char *, long)
 {
     printf("call operator new\n");
 
-    //void * p = operator new (size);
-    void * p = malloc(size);
+    // void * p = operator new (size);
+    void *p = malloc(size);
 
     return p;
 }
 
 
-#define new new(__FILE__,__LINE__)
+#define new new (__FILE__, __LINE__)
 
-void operator delete (void *p, const char *, long)
+void operator delete(void *p, const char *, long)
 {
     printf("call operator delete(void *, const char *, long)\n");
     free(p);
 }
 
-void operator delete (void * p)
+void operator delete(void *p)
 {
     printf("call operator delete(void *)\n");
     free(p);
@@ -60,7 +57,7 @@ void operator delete (void * p)
 void normal_new()
 {
     function_identifier_t f("normal_new");
-    node_t * p = new node_t;
+    node_t *p = new node_t;
     delete p;
 
     //  construct node & destruct node
@@ -69,9 +66,9 @@ void normal_new()
 void operator_new()
 {
     function_identifier_t f("operator_new");
-    //node_t * p = (node_t *)operator new(sizeof(node_t)); // error // cannot use
+    // node_t * p = (node_t *)operator new(sizeof(node_t)); // error // cannot use
     // node_t * p = (node_t*)operator new(node_t); // error
-    //free(p);
+    // free(p);
     // no construct node
 }
 
