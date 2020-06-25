@@ -1,13 +1,15 @@
 #include <stdio.h>
 
 
-struct two_int_type
-{
+struct two_int_type {
     int data[2];
-    int& operator[](size_t i) { return data[i]; }
+    int &operator[](size_t i)
+    {
+        return data[i];
+    }
 };
 
-void print_two_int(two_int_type * p)
+void print_two_int(two_int_type *p)
 {
     // printf("%d %d\n",(p->data)[0], (p->data)[1]);
     // or
@@ -22,6 +24,5 @@ void intermediate(two_int_type v)
 
 int main()
 {
-
     return 0;
 }
